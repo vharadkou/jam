@@ -9,30 +9,33 @@ import CreditCardIcon from '@material-ui/icons/CreditCard';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 
 import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { CSSProperties } from '@material-ui/styles/withStyles';
 import { useStore } from 'stores';
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
       textAlign: 'center',
     },
-    logo: {
-      animation: 'App-logo-spin infinite 20s linear',
-      height: '40vmin',
-      pointerEvents: 'none',
-    },
+    toolbar: theme.mixins.toolbar as CSSProperties,
     header: {
-      backgroundColor: '#282c34',
-      display: 'flex',
-      minHeight: '100vh',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
+      minHeight: `calc(100% - ${theme.mixins.toolbar.minHeight}px)`,
+      [theme.breakpoints.up('sm')]: {
+        minHeight: `calc(100% - ${(theme.mixins.toolbar[theme.breakpoints.up('sm')] as CSSProperties).minHeight}px)`,
+      },
       fontSize: 'calc(10px + 2vmin)',
       color: 'white',
     },
+    cards: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'center',
+    },
     card: {
-      maxWidth: 345,
+      maxWidth: 140,
+      maxHeight: 140,
+      flex: '1 0 140px',
+      margin: theme.spacing(1),
     },
   })
 );
@@ -52,13 +55,16 @@ export const Home = observer(() => {
 
   return (
     <div className={classes.root}>
+      <div className={classes.toolbar} />
       <header className={classes.header}>
-        <HomeCard className={classes.card} text='????? ????????????' image={WhatshotIcon} />
-        <HomeCard className={classes.card} text='???????' image={ListIcon} />
-        <HomeCard className={classes.card} text='???????? ????????????' image={HelpIcon} />
-        <HomeCard className={classes.card} text='???????' image={HistoryIcon} />
-        <HomeCard className={classes.card} text='?????' image={CreditCardIcon} />
-        <HomeCard className={classes.card} text='???????' image={AccountBoxIcon} />
+        <div className={classes.cards}>
+          <HomeCard className={classes.card} text='Популярные' image={WhatshotIcon} />
+          <HomeCard className={classes.card} text='Каталог' image={ListIcon} />
+          <HomeCard className={classes.card} text='Исследование' image={HelpIcon} />
+          <HomeCard className={classes.card} text='История' image={HistoryIcon} />
+          <HomeCard className={classes.card} text='Карта' image={CreditCardIcon} />
+          <HomeCard className={classes.card} text='Профиль' image={AccountBoxIcon} />
+        </div>
         <button onClick={handleTestItem}>add test item</button>
         <button onClick={handleCheckout}>checkout</button>
       </header>
