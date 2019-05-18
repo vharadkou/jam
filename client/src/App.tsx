@@ -58,7 +58,7 @@ const AuthContainer = ({ isAuth, role }: ContainerProps) => (
 const DefaultContainer = ({ isAuth, role }: ContainerProps) => (
   <div>
     <TopBar />
-    <div className="container" style={{ marginTop: '56px' }}>
+    <div className="container">
       <Route exact path="/" render={() => <Redirect to="/home" />} />
       <PrivateRoute isAuth={isAuth} role={role} path="/home" component={Home} />
       <PrivateRoute isAuth={isAuth} role={role} path="/payments" component={Payments} />

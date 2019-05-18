@@ -1,18 +1,19 @@
 import React, { memo } from "react";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
-import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/styles";
+import { createStyles } from "@material-ui/core";
 
-const useStyles = makeStyles(theme =>
-  createStyles({
-    media: {
-      height: 140,
-    },
-  })
-);
+const useStyles = makeStyles(theme => createStyles({
+  cardContent: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+  }
+}))
 
 interface Props {
   className?: string;
@@ -21,22 +22,17 @@ interface Props {
   onClick?: () => void;
 }
 
-export const HomeCard = memo(({ className, text, image:Component, onClick }: Props) => {
+export const HomeCard = memo(({ className, text, image: Component, onClick }: Props) => {
   const classes = useStyles();
 
   return (
     <Card className={className}>
       <CardActionArea onClick={onClick}>
-        {/* <CardMedia
-          className={classes.media}
-          image={image}
-          title="Contemplative Reptile"
-        /> */}
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h4">
-          <Component />
-            {text}
-          </Typography>
+          <div className={classes.cardContent}>
+            <Component />
+            <Typography variant="h6">{text}</Typography>
+          </div>
         </CardContent>
       </CardActionArea>
     </Card>
