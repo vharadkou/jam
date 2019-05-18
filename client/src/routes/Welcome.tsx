@@ -42,7 +42,7 @@ export const Welcome = observer(() => {
     <div className={classes.root}>
       <header className={classes.header}>
         <img src={logo} className={classes.logo} alt="logo" />
-        <Typography className={classes.text}>Приложение для ...</Typography>
+        <Typography className={classes.text}>СанТехУбер</Typography>
         <Button variant="contained" color="primary" onClick={login}>
           Войти чтобы начать
         </Button>

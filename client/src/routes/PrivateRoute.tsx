@@ -3,22 +3,20 @@ import { Redirect, Route, RouteProps } from 'react-router';
 
 interface Props extends RouteProps {
   isAuth?: boolean;
+  role?: string;
 }
 
-export const PrivateRoute = ({
-  component: Component,
-  isAuth,
-  ...rest
-}: Props) => {
+export const PrivateRoute = ({ component: Component, isAuth, role, ...rest }: Props) => {
   return (
     <Route
       {...rest}
       render={props =>
-        isAuth && Component ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to="/welcome" />
-        )
+        !role ? (<Redirect to="/role" />) :
+          isAuth && Component ? (
+            <Component {...props} />
+          ) : (
+              <Redirect to="/welcome" />
+            )
       }
     />
   );

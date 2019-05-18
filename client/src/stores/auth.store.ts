@@ -6,9 +6,13 @@ import { auth } from 'firebaseui';
 export class AuthStore {
   @observable public isLoading: boolean = false;
   @observable public user: firebase.User | null = null;
+  @observable public userData?: any;
 
   private authConfig: auth.Config = this.getAuthConfig();
   private authUi: auth.AuthUI = this.getAuthUi();
+
+  private users$ = app.firestore().collection('users');
+  private usersUnsubscribe: any;
 
   public constructor() {
     this.init();
@@ -18,9 +22,18 @@ export class AuthStore {
     this.isLoading = true;
 
     firebase.auth().onAuthStateChanged(user => {
-      runInAction(() => {
+      runInAction(async () => {
         this.user = user;
-        this.isLoading = false;
+
+        if (this.user && !this.usersUnsubscribe) {
+          this.usersUnsubscribe = this.users$.doc(this.user.phoneNumber!).onSnapshot(userData => {
+            this.userData = userData.data();
+            this.isLoading = false;
+          })
+        } else {
+          this.usersUnsubscribe();
+          this.usersUnsubscribe = undefined;
+        }
       });
     });
   };
@@ -38,6 +51,15 @@ export class AuthStore {
   @action public startAuthUi = (element: Element) => {
     this.authUi.start(element, this.authConfig);
   };
+
+  @action public updateUser = async (role: string) => {
+    if (this.user) {
+      const userId = this.user.phoneNumber!;
+      await this.users$.doc(userId).set({
+        role
+      });
+    }
+  }
 
   private getAuthUi(): auth.AuthUI {
     return new auth.AuthUI(firebase.auth());
