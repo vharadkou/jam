@@ -44,8 +44,8 @@ export const PaymentsTable
           <TableHead>
             <TableRow className={classes.row}>
               <TableCell className={classes.cell}>{headers[0]}</TableCell>
-              {headers.filter((_: string, ind: number) => ind > 0).map((header: string) => (
-                <TableCell className={classes.cell} align="right">{header}</TableCell>
+              {headers.filter((_: string, ind: number) => ind > 0).map((header: string, i) => (
+                <TableCell key={i} className={classes.cell} align="right">{header}</TableCell>
               ))}
             </TableRow>
           </TableHead>
@@ -53,8 +53,8 @@ export const PaymentsTable
             {records.map((record, i) => (
               <TableRow key={i} className={classes.row}>
                 <TableCell className={classes.cell} component="th" scope="row">{record[0]}</TableCell>
-                {record.filter((_: string | number, ind: number) => ind > 0).map((data: string | number) => (
-                  <TableCell className={classes.cell} align="right">{data}</TableCell>
+                {record.filter((_: string | number, ind: number) => ind > 0).map((data: string | number, i) => (
+                  <TableCell key={i} className={classes.cell} align="right">{data}</TableCell>
                 ))}
               </TableRow>
             ))}

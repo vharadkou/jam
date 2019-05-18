@@ -33,6 +33,13 @@ const useStyles = makeStyles(theme =>
 export const History = observer(() =>
 {
   const classes = useStyles();
+  const { ordersStore, authStore } = useStore();
+
+  useEffect(() =>
+  {
+    if (authStore.user)
+      ordersStore.load(authStore.user.phoneNumber)
+  }, [])
 
   const orders = [
     {
@@ -88,9 +95,16 @@ export const History = observer(() =>
   return (
     <div className={classes.root}>
       <div className={classes.main}>
-        {orders.map((order: any) => (
-          <div className={classes.card}>
-            <HistoryCard order={order} />
+        {orders.map((order: any, i) => (
+          <div key={i} className={classes.card}>
+            {
+              ordersStore.Orders ?
+                ordersStore
+                  .Orders
+                  .map((order, i) => <HistoryCard key={i} order={order.order} />)
+                : null
+            }
+            {/* <HistoryCard order={order} /> */}
           </div>
         ))}
       </div>

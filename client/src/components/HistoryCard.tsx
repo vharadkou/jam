@@ -29,7 +29,9 @@ const useStyles = makeStyles(() =>
   })
 
 );
-
+const fortamDate = (date:Date)=>{
+  return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
+}
 const objectsToArrays = (objects: any[]) =>
 {
   return objects && [...objects].map((obj: any) => [obj.name, obj.count, obj.price]);
@@ -39,7 +41,7 @@ export const HistoryCard
   = ({ order }: {
     order:
     {
-      date: string, name: string, sum: number, services:
+      date: any, name: string, services:
       { name: string, count: number, price: number }[]
     }
   }) =>
@@ -56,13 +58,9 @@ export const HistoryCard
             {order.name}
           </Typography>
           <Typography className={classes.pos} color="textSecondary">
-            {order.date}
+            {fortamDate(order.date.toDate())}
           </Typography>
-          <Typography component="p">
-            Стоимость:
-          <br />
-            {order.sum}
-          </Typography>
+        
         </CardContent>
 
         <ExpansionPanel>
