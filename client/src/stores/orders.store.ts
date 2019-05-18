@@ -8,15 +8,7 @@ export class OrdersStore {
 
     private ordersCollection = app.firestore().collection('orders');
 
-    public constructor() {
-        this.isLoading = true;
-        this.ordersCollection.onSnapshot(snapshot => {
-            runInAction(() => {
-                this.Orders = snapshot.docs.map(d => d.data());
-                this.isLoading = false;
-            });
-        });
-    }
+    public constructor() { }
 
     @action public addRow = async (order) => {
         this.isAddInProgress = true;
