@@ -12,8 +12,7 @@ import Paper from '@material-ui/core/Paper';
 const useStyles = makeStyles(() =>
   createStyles({
     root: {
-      width: 'calc(100% - 60px)',
-      margin: '30px',
+      width: '100%',
       overflowX: 'auto',
     },
     table: {

@@ -17,7 +17,8 @@ const useStyles = makeStyles(theme =>
       alignItems: 'center',
       justifyContent: 'flex-start',
       fontSize: 'calc(10px + 2vmin)',
-      marginTop: '70px',
+      width: 'calc(100% - 60px)',
+      margin: '30px',
     },
     text: {
       margin: theme.spacing(1),
