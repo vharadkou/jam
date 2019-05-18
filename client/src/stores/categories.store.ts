@@ -4,6 +4,7 @@ import { app } from 'firebase.config';
 export interface Value {
     id: string,
     data: string,
+    cost: number,
 }
 
 export interface Category {
@@ -14,15 +15,11 @@ export interface Category {
 export class CategoriesStore {
     @observable public isLoading: boolean = false;
     @observable public categories: Category[] | null = null;
-    private firebaseCategories = app.firestore().collection('categories');
 
-    public constructor() {
-        this.init();
-    }
-
-    @action public init = () => {
+    @action public load = (collactionName) => {
         this.isLoading = true;
-        this.firebaseCategories.get()
+        const firebaseCategories = app.firestore().collection(collactionName);
+        firebaseCategories.get()
             .then((snapshot) => {
                 runInAction(() => {
                     this.isLoading = false;
