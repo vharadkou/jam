@@ -67,20 +67,31 @@ const AuthContainer = ({ isAuth, role }: ContainerProps) => (
 
 const DefaultContainer = ({ isAuth, role }: ContainerProps) => {
   const classes = useStyles();
+  console.log('DDD', role)
 
   return (
     <div>
       <TopBar />
       <div className={classes.toolbar} />
       <div>
-        <Route exact path="/" render={() => <Redirect to="/home" />} />
-        <PrivateRoute isAuth={isAuth} role={role} path="/home" component={Home} />
-        <PrivateRoute isAuth={isAuth} role={role} path="/payments" component={Payments} />
-        <PrivateRoute isAuth={isAuth} role={role} path="/request/create/:categoryId" component={CreateRequest} />
-        <PrivateRoute isAuth={isAuth} role={role} path="/history" component={History} />
-        <PrivateRoute isAuth={isAuth} role={role} path="/user/categories" component={UserCategories} />
-        <PrivateRoute isAuth={isAuth} role={role} path="/user/popular" component={Popular} />
-        <PrivateRoute isAuth={isAuth} role={role} path="/requests/:categoryName" component={Requests} />
+        {(role === 'client') ? (
+          <>
+            <Route exact path="/" render={() => <Redirect to="/user/home" />} />
+            <PrivateRoute isAuth={isAuth} role={role} path="/user/home" component={Home} />
+            <PrivateRoute isAuth={isAuth} role={role} path="/user/payments" component={Payments} />
+            <PrivateRoute isAuth={isAuth} role={role} path="/user/request/create/:categoryId" component={CreateRequest} />
+            <PrivateRoute isAuth={isAuth} role={role} path="/user/history" component={History} />
+            <PrivateRoute isAuth={isAuth} role={role} path="/user/categories" component={UserCategories} />
+            <PrivateRoute isAuth={isAuth} role={role} path="/user/requests/:categoryName" component={Requests} />
+			<PrivateRoute isAuth={isAuth} role={role} path="/user/popular" component={Popular} />
+          </>
+        ) : (
+            <>
+              <Route exact path="/" render={() => <Redirect to="/master/home" />} />
+              <PrivateRoute isAuth={isAuth} role={role} path="/master/home" component={Home} />
+            </>
+          )}
+
       </div>
     </div>
   )

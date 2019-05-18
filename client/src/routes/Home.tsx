@@ -56,7 +56,7 @@ export const Home = observer(() => {
   }, [routerStore]);
 
   const openSearch = useCallback(() => {
-    routerStore.push('/request/create/2f03c6f9-2efa-4e53-9161-2cdca6887eb6');
+    routerStore.push('/user/request/create/2f03c6f9-2efa-4e53-9161-2cdca6887eb6');
   }, [routerStore]);
 
   const openPopular = useCallback(() => {

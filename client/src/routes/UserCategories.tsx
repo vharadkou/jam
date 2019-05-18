@@ -22,7 +22,7 @@ export const UserCategories = observer(() => {
     }, [categoriesStore])
 
     const handleClick = useCallback((categoryName: string) => {
-        routerStore.push(`/requests/${categoryName}`);
+        routerStore.push(`/user/requests/${categoryName}`);
     }, [routerStore])
 
     return (

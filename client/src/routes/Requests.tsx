@@ -33,7 +33,7 @@ export const Requests = observer(({ match: { params: { categoryName } } }: any) 
     }
 
     const handleClick = useCallback((categoryId: string) => {
-        routerStore.push(`/request/create/${categoryId}`);
+        routerStore.push(`/user/request/create/${categoryId}`);
     }, [routerStore])
 
     return (
