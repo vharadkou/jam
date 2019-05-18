@@ -55,7 +55,7 @@ const AuthContainer = ({ isAuth }: ContainerProps) => (
 const DefaultContainer = ({ isAuth }: ContainerProps) => (
   <div>
     <TopBar />
-    <div className="container">
+    <div className="container" style={{ marginTop: '64px' }}>
       <Route exact path="/" render={() => <Redirect to="/home" />} />
       <PrivateRoute isAuth={isAuth} path="/home" component={Home} />
       <PrivateRoute isAuth={isAuth} path="/payments" component={Payments} />
