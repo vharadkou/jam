@@ -4,17 +4,20 @@ import { RouterStore } from 'mobx-react-router';
 import { AuthStore } from './auth.store';
 import { RowsStore } from './rows.store';
 import { OrdersStore } from './orders.store';
+import { CategoriesStore } from './categories.store';
 
 const routerStore = new RouterStore();
 const authStore = new AuthStore();
 const rowsStore = new RowsStore();
 const ordersStore = new OrdersStore();
+const cotegoryesStore = new CategoriesStore();
 
 const stores = Object.freeze({
   routerStore,
   authStore,
   rowsStore,
   ordersStore,
+  cotegoryesStore,
 });
 
 const StoreContext = createContext(stores);

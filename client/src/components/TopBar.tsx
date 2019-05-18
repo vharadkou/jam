@@ -15,6 +15,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import List from '@material-ui/core/List';
+import { Category } from 'components/Category'
 
 import { observer } from 'mobx-react-lite';
 import { useStore } from 'stores';
@@ -64,7 +65,7 @@ const useStyles = makeStyles(theme =>
 
 export const TopBar = observer((props: any) => {
   const classes = useStyles();
-  const { authStore, routerStore } = useStore();
+  const { authStore, routerStore, cotegoryesStore } = useStore();
 
   const login = useCallback(() => {
     routerStore.push('/auth');
@@ -75,6 +76,7 @@ export const TopBar = observer((props: any) => {
   }, [routerStore]);
 
   const [open, setOpen] = useState(false);
+  const { categories, isLoading } = cotegoryesStore
 
   const handleDrawerClose = () => {
     setOpen(false);
@@ -130,6 +132,19 @@ export const TopBar = observer((props: any) => {
           </IconButton>
         </div>
         <Divider />
+        {!isLoading && categories !== null && (
+          <List>
+            {categories.map((category) => (
+              <React.Fragment>
+                <Category
+                  category={category}
+                  onSelectValue={(id) => console.log('DD', id)}
+                />
+                <Divider />
+              </React.Fragment>
+            ))}
+          </List>
+        )}
         <List>
           <ListItem
             button
