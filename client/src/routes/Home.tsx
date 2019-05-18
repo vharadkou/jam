@@ -9,6 +9,7 @@ import CreditCardIcon from '@material-ui/icons/CreditCard';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 
 import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { useStore } from 'stores';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -36,72 +37,17 @@ const useStyles = makeStyles(() =>
   })
 );
 
-
-
-
 export const Home = observer(() => {
   const classes = useStyles();
+  const { paymentStore } = useStore();
 
   const handleCheckout = async () => {
-    const methodData = [{
-      supportedMethods: "basic-card",
-      data: {
-        supportedNetworks: ["visa", "mastercard", "amex"],
-        supportedTypes: ["credit", "debit"]
-      }
-    }];
-    const details = {
-      total: {
-        label: "Total",
-        amount: {
-          currency: "EUR",
-          value: "17.30"
-        }
-      },
-      displayItems: [{
-        label: "Some random item",
-        amount: {
-          currency: "EUR",
-          value: "10.00"
-        }
-      }, {
-        label: "Shipping",
-        amount: {
-          currency: "EUR",
-          value: "5.00"
-        }
-      }, {
-        label: "Sales Tax",
-        amount: {
-          currency: "EUR",
-          value: "2.30"
-        }
-      }],
-      shippingOptions: [{
-        id: "STANDARD",
-        label: "Standard Shipping",
-        amount: {
-          currency: "EUR",
-          value: "5.00"
-        },
-        selected: !0
-      }, {
-        id: "EXPEDITED",
-        label: "Fast Shipping",
-        amount: {
-          currency: "EUR",
-          value: "10.00"
-        }
-      }]
-    };
+    await paymentStore.showPayment();
+  }
 
-    if ((window as any).PaymentRequest) {
-      const payments = new PaymentRequest(methodData, details, {
-        requestShipping: !0
-      })
-      await payments.canMakePayment();
-      await payments.show();
-    }
+  const handleTestItem = () => {
+    paymentStore.appendItem({ label: 'Test Item', value: '18' });
+
   }
 
   return (
@@ -113,6 +59,7 @@ export const Home = observer(() => {
         <HomeCard className={classes.card} text='???????' image={HistoryIcon} />
         <HomeCard className={classes.card} text='?????' image={CreditCardIcon} />
         <HomeCard className={classes.card} text='???????' image={AccountBoxIcon} />
+        <button onClick={handleTestItem}>add test item</button>
         <button onClick={handleCheckout}>checkout</button>
       </header>
     </div>

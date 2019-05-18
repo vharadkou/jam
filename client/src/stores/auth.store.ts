@@ -30,7 +30,7 @@ export class AuthStore {
             this.userData = userData.data();
             this.isLoading = false;
           })
-        } else {
+        } else if (this.usersUnsubscribe) {
           this.usersUnsubscribe();
           this.usersUnsubscribe = undefined;
         }

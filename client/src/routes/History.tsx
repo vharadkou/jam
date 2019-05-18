@@ -29,16 +29,14 @@ const useStyles = makeStyles(theme =>
   })
 );
 
-export const History = observer(() =>
-{
+export const History = observer(() => {
   const classes = useStyles();
   const { ordersStore, authStore } = useStore();
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     if (authStore.user)
       ordersStore.load(authStore.user.phoneNumber)
-  }, [])
+  }, [authStore.user, ordersStore])
 
   return (
     <div className={classes.root}>

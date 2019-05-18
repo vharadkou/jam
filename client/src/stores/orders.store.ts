@@ -8,8 +8,6 @@ export class OrdersStore {
 
     private ordersCollection = app.firestore().collection('orders');
 
-    public constructor() { }
-
     @action public addRow = async (order) => {
         this.isAddInProgress = true;
         await this.ordersCollection.add(order)

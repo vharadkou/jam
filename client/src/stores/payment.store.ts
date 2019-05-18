@@ -1,34 +1,66 @@
-import { action, computed, observable, runInAction } from 'mobx';
+import { action, observable, runInAction } from 'mobx';
 
-const BASE_URL = 'https://money.yandex.ru/api';
+const METHOD_DATA = [{
+    supportedMethods: "basic-card",
+    data: {
+        supportedNetworks: ["visa", "mastercard", "amex"],
+        supportedTypes: ["credit", "debit"]
+    }
+}];
+
+interface PayItem {
+    label: string;
+    value: string;
+}
+
 
 export class PaymentStore {
-    @observable public instanceId = '';
+    public readonly currency = 'BYN';
+    @observable public total: number = 0;
+    @observable public items: PaymentItem[] = [];
 
-    constructor() {
-        this.init();
+    @action
+    public async showPayment() {
+        if (PaymentRequest) {
+            const payment = new PaymentRequest(METHOD_DATA, {
+                displayItems: this.items,
+                total: {
+                    amount: {
+                        value: String(this.total),
+                        currency: this.currency,
+                    },
+                    label: 'Total'
+                }
+            });
+            const canMakePayment = await payment.canMakePayment();
+            if (canMakePayment) {
+                await payment.show();
+            }
+        }
+        else {
+
+        }
     }
 
     @action
-    public async init() {
-        const formData = new FormData();
-        formData.append('client_id', process.env.REACT_APP_YANDEX_MONEY_CLIENT_ID!);
-
-        const response = await fetch(`${BASE_URL}/instance-id`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: formData,
+    public calculateTotal() {
+        let total = 0;
+        this.items.forEach((item) => {
+            total += +item.amount.value;
         });
-        const { status, instance_id }: { status: string; instance_id: string } = await response.json();
 
-        runInAction(async () => {
-            const dataFromLS = localStorage.getItem('client_id');
-            if (!dataFromLS) {
-                localStorage.setItem('client_id', instance_id);
-                this.instanceId = instance_id;
-            }
-        });
+        this.total = total;
+    }
+
+    @action
+    public appendItem({ label, value }: PayItem) {
+        this.items.push({ label, amount: { currency: this.currency, value } });
+        runInAction(() => this.calculateTotal())
+    }
+
+    @action
+    public removeItemByIndex(index: number) {
+        this.items.splice(index, 1);
+        runInAction(() => this.calculateTotal());
     }
 }
