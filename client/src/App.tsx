@@ -5,6 +5,7 @@ import { syncHistoryWithStore } from 'mobx-react-router';
 import { Home } from 'routes/Home';
 import { Auth } from 'routes/Auth';
 import { Welcome } from 'routes/Welcome';
+import { Payments } from 'routes/Payments';
 import { PrivateRoute } from 'routes/PrivateRoute';
 import { PublicRoute } from 'routes/PublicRoute';
 import { TopBar } from 'components/TopBar';
@@ -56,6 +57,7 @@ const DefaultContainer = ({ isAuth }: ContainerProps) => (
     <div className="container">
       <Route exact path="/" render={() => <Redirect to="/home" />} />
       <PrivateRoute isAuth={isAuth} path="/home" component={Home} />
+      <PrivateRoute isAuth={isAuth} path="/payments" component={Payments} />
     </div>
   </div>
 );
