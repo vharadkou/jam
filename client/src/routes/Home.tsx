@@ -1,6 +1,12 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import logo from 'logo.svg';
+import { HomeCard } from 'components/HomeCard';
+import WhatshotIcon from '@material-ui/icons/Whatshot';
+import ListIcon from '@material-ui/icons/List';
+import HelpIcon from '@material-ui/icons/Help';
+import HistoryIcon from '@material-ui/icons/History';
+import CreditCardIcon from '@material-ui/icons/CreditCard';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
 
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 
@@ -23,6 +29,9 @@ const useStyles = makeStyles(() =>
       justifyContent: 'center',
       fontSize: 'calc(10px + 2vmin)',
       color: 'white',
+    },
+    card: {
+      maxWidth: 345,
     },
   })
 );
@@ -98,8 +107,12 @@ export const Home = observer(() => {
   return (
     <div className={classes.root}>
       <header className={classes.header}>
-        <img src={logo} className={classes.logo} alt="logo" />
-        <p>EPAM-JAM</p>
+        <HomeCard className={classes.card} text='????? ????????????' image={WhatshotIcon} />
+        <HomeCard className={classes.card} text='???????' image={ListIcon} />
+        <HomeCard className={classes.card} text='???????? ????????????' image={HelpIcon} />
+        <HomeCard className={classes.card} text='???????' image={HistoryIcon} />
+        <HomeCard className={classes.card} text='?????' image={CreditCardIcon} />
+        <HomeCard className={classes.card} text='???????' image={AccountBoxIcon} />
         <button onClick={handleCheckout}>checkout</button>
       </header>
     </div>

@@ -24,7 +24,6 @@ const useStyles = makeStyles(() =>
     services: {
       padding: 0,
     }
-
   })
 
 );
