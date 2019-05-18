@@ -1,7 +1,6 @@
 import React from 'react';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import { PaymentsTable } from './PaymentsTable';
 import Typography from '@material-ui/core/Typography';
@@ -29,12 +28,9 @@ const useStyles = makeStyles(() =>
   })
 
 );
-const fortamDate = (date:Date)=>{
-  return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
-}
-const objectsToArrays = (objects: any[]) =>
+const fortamDate = (date: Date) =>
 {
-  return objects && [...objects].map((obj: any) => [obj.name, obj.count, obj.price]);
+  return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
 }
 
 export const HistoryCard
@@ -47,6 +43,7 @@ export const HistoryCard
   }) =>
   {
     const classes = useStyles();
+    const total = order.services.reduce((acc, el, i) => el.count * el.price + acc, 0)
 
     return (
       <Card className={classes.card}>
@@ -60,7 +57,10 @@ export const HistoryCard
           <Typography className={classes.pos} color="textSecondary">
             {fortamDate(order.date.toDate())}
           </Typography>
-        
+          <Typography component="p">
+            Стоимость: {total} р
+          </Typography>
+
         </CardContent>
 
         <ExpansionPanel>
@@ -69,7 +69,7 @@ export const HistoryCard
           </ExpansionPanelSummary>
           <ExpansionPanelDetails className={classes.services}>
 
-            <PaymentsTable headers={['Услуга','Кол.','Цена, р']} records={objectsToArrays(order.services)} />
+            <PaymentsTable services={order.services} />
 
           </ExpansionPanelDetails>
         </ExpansionPanel>

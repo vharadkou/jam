@@ -17,8 +17,8 @@ const useStyles = makeStyles(theme =>
       alignItems: 'center',
       justifyContent: 'flex-start',
       fontSize: 'calc(10px + 2vmin)',
-      width: 'calc(100% - 60px)',
-      margin: '30px',
+      width: 'calc(100% - 20px)',
+      margin: '0 10px',
     },
     text: {
       margin: theme.spacing(1),
@@ -29,14 +29,12 @@ const useStyles = makeStyles(theme =>
 export const Payments = observer(() =>
 {
   const classes = useStyles();
+  const services = paymentsRecords;
 
-  const headers = ['Оказанная услуга', 'Кол., шт', 'Цена, р', 'Ст-ть, р'];
-  const records = paymentsRecords;
-  const total = records.reduce((acc, it, i) => (+it[it.length - 1] + acc), 0)
   return (
     <div className={classes.root}>
       <div className={classes.main}>
-        <PaymentsTable headers={headers} records={records} total={total.toString()} />
+        <PaymentsTable services={services} showTotal={true} />
       </div>
     </div>
   );

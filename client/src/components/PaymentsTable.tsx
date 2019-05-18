@@ -16,11 +16,12 @@ const useStyles = makeStyles(() =>
       overflowX: 'auto',
     },
     table: {
+      width: '100%',
     },
     row: {
     },
     cell: {
-      padding: '10px',
+      padding: '5px',
       minWidth: '40px',
       textAlign: 'start',
     },
@@ -32,11 +33,15 @@ const useStyles = makeStyles(() =>
 
 );
 
+const headers = ['Оказанная услуга', 'Кол., шт', 'Цена, р', 'Ст-ть, р'];
 
 export const PaymentsTable
-  = ({ headers, records, total }: { headers: string[], records: (string | number)[][], total?: string }) =>
+  = ({ services, showTotal }:
+    { services: { name: string, price: number, count: number }[], showTotal?: boolean }) =>
   {
     const classes = useStyles();
+    const records = services.map(it => [it.name, it.count, it.price, it.count * it.price]);
+    const total = records.reduce((acc, it, i) => (+it[it.length - 1] + acc), 0)
 
     return (
       <Paper className={classes.root}>
@@ -60,9 +65,9 @@ export const PaymentsTable
             ))}
           </TableBody>
         </Table>
-        {total? <Typography variant="h6" className={classes.total}>
-          Итого: {total}
-        </Typography>:''}
+        {showTotal ? <Typography variant="h6" className={classes.total}>
+          Итого: {total} р
+        </Typography> : ''}
       </Paper>
 
     );
