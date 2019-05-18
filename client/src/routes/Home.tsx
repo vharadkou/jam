@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
 import { HomeCard } from 'components/HomeCard';
 import WhatshotIcon from '@material-ui/icons/Whatshot';
@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme) =>
     root: {
       textAlign: 'center',
     },
-    toolbar: theme.mixins.toolbar as CSSProperties,
     header: {
       minHeight: `calc(100% - ${theme.mixins.toolbar.minHeight}px)`,
       [theme.breakpoints.up('sm')]: {
@@ -42,7 +41,7 @@ const useStyles = makeStyles((theme) =>
 
 export const Home = observer(() => {
   const classes = useStyles();
-  const { paymentStore } = useStore();
+  const { paymentStore, routerStore } = useStore();
 
   const handleCheckout = async () => {
     await paymentStore.showPayment();
@@ -50,16 +49,18 @@ export const Home = observer(() => {
 
   const handleTestItem = () => {
     paymentStore.appendItem({ label: 'Test Item', value: '18' });
-
   }
+
+  const openCatalog = useCallback(() => {
+    routerStore.push('/user/categories');
+  }, [routerStore]);
 
   return (
     <div className={classes.root}>
-      <div className={classes.toolbar} />
       <header className={classes.header}>
         <div className={classes.cards}>
           <HomeCard className={classes.card} text='Популярные' image={WhatshotIcon} />
-          <HomeCard className={classes.card} text='Каталог' image={ListIcon} />
+          <HomeCard className={classes.card} text='Каталог' image={ListIcon} onClick={openCatalog} />
           <HomeCard className={classes.card} text='Исследование' image={HelpIcon} />
           <HomeCard className={classes.card} text='История' image={HistoryIcon} />
           <HomeCard className={classes.card} text='Карта' image={CreditCardIcon} />

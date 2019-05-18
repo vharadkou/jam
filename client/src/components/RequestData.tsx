@@ -1,6 +1,5 @@
 import React from 'react';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
-import classnames from 'classnames';
 import TextField from '@material-ui/core/TextField';
 import { MaterialUIPickers } from './MaterialUIPickers';
 

@@ -17,8 +17,15 @@ import { TopBar } from 'components/TopBar';
 import { LoadingScreen } from 'components/LoadingScreen';
 import { useStore } from 'stores';
 import { observer } from 'mobx-react-lite';
+import { createStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/core/styles';
+import { CSSProperties } from '@material-ui/core/styles/withStyles';
 
 const browserHistory = createBrowserHistory();
+
+const useStyles = makeStyles(theme => createStyles({
+  toolbar: theme.mixins.toolbar as CSSProperties,
+}))
 
 export const App = observer(() => {
   const { routerStore, authStore: { isLoading, user, userData } } = useStore();
@@ -49,7 +56,7 @@ export const App = observer(() => {
 type ContainerProps = { isAuth: boolean, role: string };
 
 const AuthContainer = ({ isAuth, role }: ContainerProps) => (
-  <div className="container">
+  <div>
     <Route exact path="/" render={() => <Redirect to="/welcome" />} />
     <PublicRoute isAuth={isAuth} role={role} path="/welcome" component={Welcome} />
     <PublicRoute isAuth={isAuth} role={role} path="/auth" component={Auth} />
@@ -57,17 +64,22 @@ const AuthContainer = ({ isAuth, role }: ContainerProps) => (
   </div>
 );
 
-const DefaultContainer = ({ isAuth, role }: ContainerProps) => (
-  <div>
-    <TopBar />
-    <div className="container">
-      <Route exact path="/" render={() => <Redirect to="/home" />} />
-      <PrivateRoute isAuth={isAuth} role={role} path="/home" component={Home} />
-      <PrivateRoute isAuth={isAuth} role={role} path="/payments" component={Payments} />
-      <PrivateRoute isAuth={isAuth} role={role} path="/request/create/:categoryId" component={CreateRequest} />
-      <PrivateRoute isAuth={isAuth} role={role} path="/history" component={History} />
-      <PrivateRoute isAuth={isAuth} role={role} path="/user/categories" component={UserCategories} />
-      <PrivateRoute isAuth={isAuth} role={role} path="/requests/:categoryName" component={Requests} />
+const DefaultContainer = ({ isAuth, role }: ContainerProps) => {
+  const classes = useStyles();
+
+  return (
+    <div>
+      <TopBar />
+      <div className={classes.toolbar} />
+      <div>
+        <Route exact path="/" render={() => <Redirect to="/home" />} />
+        <PrivateRoute isAuth={isAuth} role={role} path="/home" component={Home} />
+        <PrivateRoute isAuth={isAuth} role={role} path="/payments" component={Payments} />
+        <PrivateRoute isAuth={isAuth} role={role} path="/request/create/:categoryId" component={CreateRequest} />
+        <PrivateRoute isAuth={isAuth} role={role} path="/history" component={History} />
+        <PrivateRoute isAuth={isAuth} role={role} path="/user/categories" component={UserCategories} />
+        <PrivateRoute isAuth={isAuth} role={role} path="/requests/:categoryName" component={Requests} />
+      </div>
     </div>
-  </div>
-);
+  )
+};

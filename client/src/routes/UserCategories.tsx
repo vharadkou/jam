@@ -19,7 +19,7 @@ export const UserCategories = observer(() => {
 
     useEffect(() => {
         categoriesStore.load('categories')
-    }, [])
+    }, [categoriesStore])
 
     const handleClick = useCallback((categoryName: string) => {
         routerStore.push(`/requests/${categoryName}`);

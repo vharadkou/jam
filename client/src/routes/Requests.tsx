@@ -24,7 +24,7 @@ export const Requests = observer(({ match: { params: { categoryName } } }: any) 
         if (!isLoading && categories === null) {
             categoriesStore.load('categories');
         }
-    }, [])
+    }, [categoriesStore, isLoading, categories])
 
     let requests: any = []
     if (!isLoading && categories !== null) {
