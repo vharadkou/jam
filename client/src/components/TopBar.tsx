@@ -1,15 +1,26 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
+import classNames from 'classnames';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import MailIcon from '@material-ui/icons/Mail';
 
 import { observer } from 'mobx-react-lite';
 import { useStore } from 'stores';
 
+const drawerWidth = 240;
 const useStyles = makeStyles(theme =>
   createStyles({
     root: {
@@ -21,10 +32,38 @@ const useStyles = makeStyles(theme =>
     title: {
       flexGrow: 1,
     },
+    drawer: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
+    drawerPaper: {
+      width: drawerWidth,
+    },
+    drawerHeader: {
+      display: 'flex' as 'flex',
+      alignItems: 'center' as 'center',
+      padding: '0 8px',
+      ...theme.mixins.toolbar,
+      justifyContent: 'flex-end' as 'flex-end',
+    },
+    appBarShift: {
+      width: `calc(100% - ${drawerWidth}px)`,
+      marginLeft: drawerWidth,
+      transition: theme.transitions.create(['margin', 'width'], {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+    },
+    appBar: {
+      transition: theme.transitions.create(['margin', 'width'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+    },
   })
 );
 
-export const TopBar = observer(() => {
+export const TopBar = observer((props: any) => {
   const classes = useStyles();
   const { authStore, routerStore } = useStore();
 
@@ -32,15 +71,30 @@ export const TopBar = observer(() => {
     routerStore.push('/auth');
   }, [routerStore]);
 
+  const [open, setOpen] = useState(false);
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
   return (
     <div className={classes.root}>
-      <AppBar position="absolute">
+      <AppBar position="absolute"
+        className={classNames(classes.appBar, {
+          [classes.appBarShift]: open,
+        })}
+      >
         <Toolbar>
           <IconButton
             edge="start"
             className={classes.menuButton}
             color="inherit"
             aria-label="Menu"
+            onClick={handleDrawerOpen}
           >
             <MenuIcon />
           </IconButton>
@@ -52,12 +106,27 @@ export const TopBar = observer(() => {
               Logout
             </Button>
           ) : (
-            <Button color="inherit" onClick={login}>
-              Login
+              <Button color="inherit" onClick={login}>
+                Login
             </Button>
-          )}
+            )}
         </Toolbar>
       </AppBar>
+      <Drawer
+        className={classes.drawer}
+        variant="persistent"
+        anchor="left"
+        open={open}
+        classes={{
+          paper: classes.drawerPaper,
+        }}
+      >
+        <div className={classes.drawerHeader}>
+          <IconButton onClick={handleDrawerClose}>
+            <ChevronLeftIcon />
+          </IconButton>
+        </div>
+      </Drawer>
     </div>
   );
 });
