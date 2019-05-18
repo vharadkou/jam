@@ -27,25 +27,29 @@ const useStyles = makeStyles(() =>
   })
 
 );
-const fortamDate = (date: Date) =>
-{
+const fortamDate = (date: Date) => {
   return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
 }
 
-export const HistoryCard = ({ order }: {
-  order:
-  {
+export const HistoryCard
+  = ({ order }: {
+    order:
+    {
+      date: any, name: string, services:
+      { name: string, count: number, price: number }[]
+    }
+  }) => {
     const [expanded, setExpanded] = useState(
       false
     );
     const classes = useStyles();
     const total = order.services.reduce((acc, el, i) => el.count * el.price + acc, 0);
 
-  return (
-    <Card className={classes.card}>
-      <CardContent>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
-          Выполненная услуга:
+    return (
+      <Card className={classes.card}>
+        <CardContent>
+          <Typography className={classes.title} color="textSecondary" gutterBottom>
+            Выполненная услуга:
           </Typography>
           <Typography variant="h5" component="h2">
             {order.name}
@@ -69,3 +73,9 @@ export const HistoryCard = ({ order }: {
 
             <PaymentsTable services={order.services} />
 
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+
+      </Card>
+    );
+  };
