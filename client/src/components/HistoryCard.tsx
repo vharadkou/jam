@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -23,7 +23,7 @@ const useStyles = makeStyles(() =>
     },
     services: {
       padding: 0,
-    }
+    },
   })
 
 );
@@ -41,8 +41,11 @@ export const HistoryCard
     }
   }) =>
   {
+    const [expanded, setExpanded] = useState(
+      false
+    );
     const classes = useStyles();
-    const total = order.services.reduce((acc, el, i) => el.count * el.price + acc, 0)
+    const total = order.services.reduce((acc, el, i) => el.count * el.price + acc, 0);
 
     return (
       <Card className={classes.card}>
@@ -62,9 +65,11 @@ export const HistoryCard
 
         </CardContent>
 
-        <ExpansionPanel>
+        <ExpansionPanel expanded={expanded === true} onChange={event => setExpanded(!expanded)}>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>Показать список услуг</Typography>
+            {expanded ? <Typography>Скрыть список услуг</Typography>
+              : <Typography>Показать список услуг</Typography>
+            }
           </ExpansionPanelSummary>
           <ExpansionPanelDetails className={classes.services}>
 
