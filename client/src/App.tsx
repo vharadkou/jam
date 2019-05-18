@@ -60,10 +60,10 @@ const DefaultContainer = ({ isAuth, role }: ContainerProps) => (
     <TopBar />
     <div className="container" style={{ marginTop: '64px' }}>
       <Route exact path="/" render={() => <Redirect to="/home" />} />
-      <PrivateRoute isAuth={isAuth} path="/home" component={Home} />
-      <PrivateRoute isAuth={isAuth} path="/payments" component={Payments} />
-      <PrivateRoute isAuth={isAuth} path="/request/create/:categoryId" component={CreateRequest} />
-      <PrivateRoute isAuth={isAuth} path="/history" component={History} />
+      <PrivateRoute isAuth={isAuth} role={role} path="/home" component={Home} />
+      <PrivateRoute isAuth={isAuth} role={role} path="/payments" component={Payments} />
+      <PrivateRoute isAuth={isAuth} role={role} path="/request/create/:categoryId" component={CreateRequest} />
+      <PrivateRoute isAuth={isAuth} role={role} path="/history" component={History} />
     </div>
   </div>
 );
