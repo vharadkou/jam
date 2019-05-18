@@ -7,15 +7,14 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import HistoryIcon from '@material-ui/icons/History';
 import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import List from '@material-ui/core/List';
 
 import { observer } from 'mobx-react-lite';
 import { useStore } from 'stores';
@@ -69,6 +68,10 @@ export const TopBar = observer((props: any) => {
 
   const login = useCallback(() => {
     routerStore.push('/auth');
+  }, [routerStore]);
+
+  const historyNavigate = useCallback(() => {
+    routerStore.push('/history');
   }, [routerStore]);
 
   const [open, setOpen] = useState(false);
@@ -126,6 +129,19 @@ export const TopBar = observer((props: any) => {
             <ChevronLeftIcon />
           </IconButton>
         </div>
+        <Divider />
+        <List>
+          <ListItem
+            button
+            key='history'
+            onClick={historyNavigate}
+          >
+            <ListItemIcon>
+              <HistoryIcon />
+            </ListItemIcon>
+            <ListItemText primary='История' />
+          </ListItem>
+        </List>
       </Drawer>
     </div>
   );
