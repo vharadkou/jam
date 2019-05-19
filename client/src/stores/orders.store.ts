@@ -20,7 +20,7 @@ export class OrdersStore {
       order: {
         name: order.requestName.value,
         date: order.preferredTime,
-        address: order.address.description ? order.address.description : null,
+        address: order.address.label ? order.address.label : null,
         apartmentNumber: order.apartmentNumber,
         services: [{
           count: 1,
