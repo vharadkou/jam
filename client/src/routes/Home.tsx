@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) =>
 
 export const Home = observer(() => {
   const classes = useStyles();
-  const { paymentStore, routerStore } = useStore();
+  const { paymentStore, routerStore, authStore: { userData } } = useStore();
 
   const handleCheckout = async () => {
     await paymentStore.showPayment();
@@ -55,16 +55,35 @@ export const Home = observer(() => {
     routerStore.push('/user/categories');
   }, [routerStore]);
 
+  const openSearch = useCallback(() => {
+    routerStore.push('/request/create/2f03c6f9-2efa-4e53-9161-2cdca6887eb6');
+  }, [routerStore]);
+
+  const openPopular = useCallback(() => {
+    routerStore.push('/user/popular');
+  }, [routerStore]);
+
   return (
     <div className={classes.root}>
       <header className={classes.header}>
         <div className={classes.cards}>
-          <HomeCard className={classes.card} text='Популярные' image={WhatshotIcon} />
-          <HomeCard className={classes.card} text='Каталог' image={ListIcon} onClick={openCatalog} />
-          <HomeCard className={classes.card} text='Исследование' image={HelpIcon} />
-          <HomeCard className={classes.card} text='История' image={HistoryIcon} />
-          <HomeCard className={classes.card} text='Карта' image={CreditCardIcon} />
-          <HomeCard className={classes.card} text='Профиль' image={AccountBoxIcon} />
+          {userData.role === 'client' ? (
+            <React.Fragment>
+              <HomeCard className={classes.card} text='Популярные' image={WhatshotIcon} onClick={openPopular} />
+              <HomeCard className={classes.card} text='Каталог' image={ListIcon} onClick={openCatalog} />
+              <HomeCard className={classes.card} text='Исследование' image={HelpIcon} onClick={openSearch} />
+              <HomeCard className={classes.card} text='История' image={HistoryIcon} />
+              <HomeCard className={classes.card} text='Карта' image={CreditCardIcon} />
+              <HomeCard className={classes.card} text='Профиль' image={AccountBoxIcon} />
+            </React.Fragment>
+          ) : (
+              <React.Fragment>
+                <HomeCard className={classes.card} text='Задачи' image={WhatshotIcon} />
+                <HomeCard className={classes.card} text='График' image={ListIcon} />
+                <HomeCard className={classes.card} text='Рейтинг' image={AccountBoxIcon} />
+                <HomeCard className={classes.card} text='История' image={HistoryIcon} />
+              </React.Fragment>
+            )}
         </div>
         <button onClick={handleTestItem}>add test item</button>
         <button onClick={handleCheckout}>checkout</button>

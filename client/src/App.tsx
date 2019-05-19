@@ -13,6 +13,7 @@ import { PublicRoute } from 'routes/PublicRoute';
 import { SwitchRole } from 'routes/SwitchRole';
 import { UserCategories } from 'routes/UserCategories';
 import { Requests } from 'routes/Requests';
+import { Popular } from 'routes/Popular';
 import { TopBar } from 'components/TopBar';
 import { LoadingScreen } from 'components/LoadingScreen';
 import { useStore } from 'stores';
@@ -78,6 +79,7 @@ const DefaultContainer = ({ isAuth, role }: ContainerProps) => {
         <PrivateRoute isAuth={isAuth} role={role} path="/request/create/:categoryId" component={CreateRequest} />
         <PrivateRoute isAuth={isAuth} role={role} path="/history" component={History} />
         <PrivateRoute isAuth={isAuth} role={role} path="/user/categories" component={UserCategories} />
+        <PrivateRoute isAuth={isAuth} role={role} path="/user/popular" component={Popular} />
         <PrivateRoute isAuth={isAuth} role={role} path="/requests/:categoryName" component={Requests} />
       </div>
     </div>
