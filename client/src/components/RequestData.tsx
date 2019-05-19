@@ -5,11 +5,7 @@ import { MaterialUIPickers } from './MaterialUIPickers';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
-        root: {
-            // display: 'flex',
-            // justifyContent: 'space-between',
-            // flexDirection: 'row',
-        },
+        root: {},
         field: {
             marginLeft: theme.spacing(2),
             '& .MuiFormControl-root': {
@@ -26,7 +22,6 @@ export const RequestData = ({
     preferredTime,
 }) => {
     const classes = useStyles();
-    console.log('FFFF', requestName)
 
     return (
         <div className={classes.root}>
@@ -34,6 +29,8 @@ export const RequestData = ({
                 <TextField
                     key='request'
                     label="Услуга"
+                    rowsMax="2"
+                    multiline
                     value={requestName.value}
                     disabled={requestName.disabled}
                     onChange={handleChange('requestName')}
