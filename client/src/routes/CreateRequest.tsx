@@ -4,10 +4,13 @@ import { useStore } from 'stores';
 import Button from '@material-ui/core/Button';
 import green from '@material-ui/core/colors/green';
 import amber from '@material-ui/core/colors/amber';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { RequestData } from 'components/RequestData';
 import { Value } from 'stores/categories.store';
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
+import { Typography } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 const baseUnit = 2;
 
@@ -40,6 +43,7 @@ const useStyles = makeStyles((theme) =>
     message: {
       display: 'flex',
       flexDirection: 'column',
+      color: 'white',
     },
     iconVariant: {
       opacity: 0.9,
@@ -60,6 +64,14 @@ const useStyles = makeStyles((theme) =>
     action: {
       paddingTop: '8px',
     },
+    button: {
+      margin: theme.spacing(0.5)
+    },
+    container: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center'
+    }
   })
 );
 
@@ -75,12 +87,6 @@ const ALL_WARNINGS_MESSAGES = [
     index: 0,
   },
 ];
-
-const hideWarning = (warnings, index, setWarnings) => {
-  let newWarns = [...warnings];
-  newWarns[index].isVisible = false;
-  setWarnings(newWarns);
-}
 
 export const CreateRequest = observer(({ match: { params: { categoryId } } }: any) => {
   const classes = useStyles();
@@ -124,12 +130,18 @@ export const CreateRequest = observer(({ match: { params: { categoryId } } }: an
     };
   }
 
+  const [isDrawerOpen, setDrawerOpen] = useState(false);
+
   useEffect(() => {
     categoriesStore.load('categories')
       .then(() => setRequestData(createDefalteData()));
+
+    setTimeout(() => {
+      setDrawerOpen(true);
+    }, 500)
   }, [])
 
-  const [warnings, setWarnings] = useState(ALL_WARNINGS_MESSAGES);
+  const [warnings] = useState(ALL_WARNINGS_MESSAGES);
   const [requestData, setRequestData] = useState(createDefalteData());
 
   const addRow = useCallback(async () => {
@@ -143,30 +155,6 @@ export const CreateRequest = observer(({ match: { params: { categoryId } } }: an
 
   return (
     <div className={classes.root}>
-      <div className="warning">
-        {warnings.filter(w => w.isVisible)
-          .map((warning, i) => (<div key={i} className={classes.snackbar}>
-            <SnackbarContent
-              className={classes.warning}
-              message={(
-                <span className={classes.message}>
-                  <span style={{ textAlign: 'center', fontWeight: 1000, }}>Внимание</span>
-                  <ul>{warning.messages.map((m, j) => (<li key={j}>{m}</li>))}</ul>
-                </span>
-              )}
-              action={[
-                <Button
-                  key="close"
-                  aria-label="Close"
-                  variant="contained"
-                  onClick={hideWarning.bind(null, warnings, warning.index, setWarnings)}
-                >
-                  <span>Закрыть</span>
-                </Button>,
-              ]}
-            />
-          </div>))}
-      </div>
       <div className={classes.data}>
         <RequestData
           {...requestData}
@@ -185,6 +173,27 @@ export const CreateRequest = observer(({ match: { params: { categoryId } } }: an
           Создать
         </Button>
       </div>
+      <SwipeableDrawer
+        anchor="bottom"
+        open={isDrawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        onOpen={() => setDrawerOpen(true)}
+      >
+        {warnings.filter(w => w.isVisible)
+          .map((warning, i) => (
+            <div key={i} className={classes.warning}>
+              <span className={classes.message}>
+                <div className={classes.container}>
+                  <Typography variant="h6" style={{ textAlign: 'center', fontWeight: 1000, marginLeft: 38 }}>Внимание</Typography>
+                  <IconButton className={classes.button} aria-label="Delete" onClick={() => setDrawerOpen(false)}>
+                    <CloseIcon style={{color: 'black'}}/>
+                  </IconButton>
+                </div>
+                <ul style={{marginTop: 0}}>{warning.messages.map((m, j) => (<li key={j}><Typography variant="body2">{m}</Typography></li>))}</ul>
+              </span>
+            </div>
+          ))}
+      </SwipeableDrawer>
     </div>
   );
 });
