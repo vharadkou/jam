@@ -1,0 +1,5 @@
+[{
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target" : { "namespace": "android_app", "package_name": "com.epam.jam",
+                 "sha256_cert_fingerprints": ["9F:9D:41:4A:42:D9:FF:59:57:F3:00:7D:48:66:88:51:E9:AC:72:10:63:8A:2F:5F:13:86:9D:6C:4D:3D:54:B2"] }
+  }]
