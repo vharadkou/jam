@@ -7,6 +7,8 @@ import Button from '@material-ui/core/Button';
 
 import { observer } from 'mobx-react-lite';
 import { useStore } from 'stores';
+import IconButton from '@material-ui/core/IconButton';
+import Arrowback from '@material-ui/icons/ArrowBack';
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -16,9 +18,9 @@ const useStyles = makeStyles(theme =>
     menuButton: {
       marginRight: theme.spacing(2),
     },
-    title: {
-      flexGrow: 1,
-    },
+    toolbar: {
+      justifyContent: 'space-between'
+    }
   })
 );
 
@@ -30,13 +32,32 @@ export const TopBar = observer((props: any) => {
     routerStore.push('/auth');
   }, [routerStore]);
 
+  const back = useCallback(() => {
+    routerStore.goBack();
+  }, [routerStore]);
+
+  const isHome = routerStore.location.pathname === '/user/home' ||
+    routerStore.location.pathname === '/master/home';
+
   return (
     <div className={classes.root}>
       <AppBar position="absolute">
-        <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            Home
-          </Typography>
+        <Toolbar className={classes.toolbar}>
+          {isHome ? (
+            <Typography variant="h6">
+              Главная
+            </Typography>
+          ) : (
+              <IconButton
+                edge="start"
+                className={classes.menuButton}
+                color="inherit"
+                aria-label="Menu"
+                onClick={back}
+              >
+                <Arrowback />
+              </IconButton>
+            )}
           {authStore.user ? (
             <Button color="inherit" onClick={authStore.logout}>
               Logout
