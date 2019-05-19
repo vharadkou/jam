@@ -88,11 +88,11 @@ export const TopBar = observer((props: any) => {
             )}
           {authStore.user ? (
             <Button color="inherit" onClick={authStore.logout}>
-              Logout
+              Выйти
             </Button>
           ) : (
               <Button color="inherit" onClick={login}>
-                Login
+                Войти
             </Button>
             )}
         </Toolbar>
