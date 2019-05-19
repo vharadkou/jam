@@ -7,6 +7,8 @@ import HelpIcon from '@material-ui/icons/Help';
 import HistoryIcon from '@material-ui/icons/History';
 import CreditCardIcon from '@material-ui/icons/CreditCard';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import StarRateIcon from '@material-ui/icons/StarRate';
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { CSSProperties } from '@material-ui/styles/withStyles';
@@ -79,8 +81,8 @@ export const Home = observer(() => {
           ) : (
               <React.Fragment>
                 <HomeCard className={classes.card} text='Задачи' image={WhatshotIcon} />
-                <HomeCard className={classes.card} text='График' image={ListIcon} />
-                <HomeCard className={classes.card} text='Рейтинг' image={AccountBoxIcon} />
+                <HomeCard className={classes.card} text='График' image={CalendarTodayIcon} />
+                <HomeCard className={classes.card} text='Рейтинг' image={StarRateIcon} />
                 <HomeCard className={classes.card} text='История' image={HistoryIcon} />
               </React.Fragment>
             )}
