@@ -44,8 +44,10 @@ const useStyles = makeStyles((theme) =>
       '&:hover': {
         backgroundColor: green[700],
       },
+    },
+    chip: {
+      backgroundColor: '#303f9f !important',
     }
-
   })
 
 );
@@ -108,7 +110,6 @@ export const HistoryCard
       console.log('add service');
     }
 
-
     return (
       <Card className={classes.card}>
         <CardContent>
@@ -122,19 +123,19 @@ export const HistoryCard
             Стоимость: {total} BYN
           </Typography>
           {!isMaster && order.order.status === Status.Payed && (
-            <Chip color="primary" avatar={<Avatar><CardIcon /></Avatar>} label={order.order.status} />
+            <Chip color="primary" className={classes.chip} avatar={<Avatar><CardIcon /></Avatar>} label={order.order.status} />
           )}
           {!isMaster && order.order.status === Status.WaitingPayment && (
             <Chip color="default" onClick={handlePayment} avatar={<Avatar><AttachMoneyIcon /></Avatar>} label={order.order.status} />
           )}
           {!isMaster && order.order.status === Status.InProgress && (
-            <Chip color="default" onClick={handlePayment} avatar={<Avatar><AllInclusiveIcon /></Avatar>} label={order.order.status} />
+            <Chip color="default" avatar={<Avatar><AllInclusiveIcon /></Avatar>} label={order.order.status} />
           )}
           {!isMaster && order.order.status === Status.Accepted && (
-            <Chip color="default" onClick={handlePayment} avatar={<Avatar><HowToRegIcon /></Avatar>} label={order.order.status} />
+            <Chip color="default" avatar={<Avatar><HowToRegIcon /></Avatar>} label={order.order.status} />
           )}
           {!isMaster && order.order.status === Status.InPool && (
-            <Chip color="default" onClick={handlePayment} avatar={<Avatar><HourglassEmptyIcon /></Avatar>} label={order.order.status} />
+            <Chip color="default" avatar={<Avatar><HourglassEmptyIcon /></Avatar>} label={order.order.status} />
           )}
           {isMaster && order.order.status === Status.Accepted && (
             <Chip color="secondary" onClick={startOrder} label={'Начать'} />

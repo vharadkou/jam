@@ -1,6 +1,7 @@
 import { action, observable, runInAction } from 'mobx';
 import { app } from 'firebase.config';
 import uuidv4 from 'uuid/v4';
+import { Status } from 'components/HistoryCard';
 
 export class OrdersStore {
   @observable public Orders?: any[];
@@ -76,7 +77,7 @@ export class OrdersStore {
 
     this.ordersQuery = snapshot.docs;
 
-    this.Orders = snapshot.docs.map(d => d.data())
+    this.Orders = snapshot.docs.map(d => d.data()).sort((a, b) => b.order.creationTime - a.order.creationTime);
     runInAction(() => this.isLoading = false);
   }
 
@@ -88,7 +89,7 @@ export class OrdersStore {
 
     this.ordersQuery = snapshot.docs;
 
-    this.Orders = snapshot.docs.map(d => d.data())
+    this.Orders = snapshot.docs.map(d => d.data()).sort((a, b) => b.order.creationTime - a.order.creationTime)
     runInAction(() => this.isLoading = false);
   }
 
