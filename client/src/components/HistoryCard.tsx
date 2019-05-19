@@ -8,15 +8,15 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Chip from '@material-ui/core/Chip';
+import Avatar from '@material-ui/core/Avatar';
+import CardIcon from '@material-ui/icons/CreditCard';
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     card: {
       minWidth: 275,
       width: '100%',
-    },
-    title: {
-      fontSize: 14,
     },
     pos: {
       marginBottom: 12,
@@ -24,6 +24,9 @@ const useStyles = makeStyles(() =>
     services: {
       padding: 0,
     },
+    payment: {
+      margin: theme.spacing(1)
+    }
   })
 
 );
@@ -48,19 +51,16 @@ export const HistoryCard
     return (
       <Card className={classes.card}>
         <CardContent>
-          <Typography className={classes.title} color="textSecondary" gutterBottom>
-            Выполненная услуга:
-          </Typography>
           <Typography variant="h5" component="h2">
             {order.name}
           </Typography>
           <Typography className={classes.pos} color="textSecondary">
             {fortamDate(order.date.toDate())}
           </Typography>
-          <Typography component="p">
+          <Typography component="p" className={classes.payment}>
             Стоимость: {total} р
           </Typography>
-
+          <Chip color="primary" avatar={<Avatar><CardIcon /></Avatar>} label="Оплачено" />
         </CardContent>
 
         <ExpansionPanel expanded={expanded === true} onChange={event => setExpanded(!expanded)}>

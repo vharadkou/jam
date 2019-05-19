@@ -6,33 +6,33 @@ import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { useStore } from 'stores';
 
 const useStyles = makeStyles(theme =>
-    createStyles({
-        root: {
-        },
-    })
+  createStyles({
+    root: {
+    },
+  })
 );
 
 export const UserCategories = observer(() => {
-    const classes = useStyles();
-    const { categoriesStore, routerStore } = useStore();
-    const { categories, isLoading } = categoriesStore
+  const classes = useStyles();
+  const { categoriesStore, routerStore } = useStore();
+  const { categories, isLoading } = categoriesStore
 
-    useEffect(() => {
-        categoriesStore.load('categories')
-    }, [categoriesStore])
+  useEffect(() => {
+    categoriesStore.load('categories')
+  }, [])
 
-    const handleClick = useCallback((categoryName: string) => {
-        routerStore.push(`/user/requests/${categoryName}`);
-    }, [routerStore])
+  const handleClick = useCallback((categoryName: string) => {
+    routerStore.push(`/user/requests/${categoryName}`);
+  }, [routerStore])
 
-    return (
-        <div className={classes.root}>
-            {!isLoading && categories !== null && (
-                <Categories
-                    categories={categories}
-                    onClick={handleClick}
-                />
-            )}
-        </div>
-    );
+  return (
+    <div className={classes.root}>
+      {categories && (
+        <Categories
+          categories={categories}
+          onClick={handleClick}
+        />
+      )}
+    </div>
+  );
 });
