@@ -38,7 +38,14 @@ export class PaymentStore {
       });
       const canMakePayment = await payment.canMakePayment();
       if (canMakePayment) {
-        await payment.show();
+        const response = await payment.show();
+
+        return new Promise((resolve) => {
+          setTimeout(async () => {
+            await response.complete("unknown");
+            resolve();
+          }, 1000);
+        })
       }
     }
     else {

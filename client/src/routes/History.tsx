@@ -42,12 +42,17 @@ export const History = observer(() => {
   }, [])
 
   const makePayment = useCallback(async (order: Order) => {
-    const payments = order.services.map(service => ({
+    const payments = order.order.services.map(service => ({
       label: service.name,
       value: service.price.toString(),
     }))
 
     await paymentStore.showPayment(payments);
+    await ordersStore.updatePaymentStatus(order.number);
+
+    if (authStore.user) {
+      ordersStore.load(authStore.user.phoneNumber);
+    }
   }, [])
 
   return (
@@ -58,7 +63,7 @@ export const History = observer(() => {
             ordersStore
               .Orders
               .map((order, i) => <div key={i} className={classes.card}>
-                <HistoryCard order={order.order} onPayment={makePayment} /> </div>)
+                <HistoryCard order={order} onPayment={makePayment} /> </div>)
             : null
         }
       </div>

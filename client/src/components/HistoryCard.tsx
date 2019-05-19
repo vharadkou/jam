@@ -44,11 +44,15 @@ export enum Status {
 }
 
 export interface Order {
-  date: any,
-  name: string,
-  services:
-  { name: string, count: number, price: number }[],
-  status: string
+  number: number;
+  order: {
+    date: any,
+    name: string,
+    services:
+    { name: string, count: number, price: number }[],
+    status: string
+  },
+  phoneNumber: string
 }
 
 export const HistoryCard
@@ -60,7 +64,7 @@ export const HistoryCard
       false
     );
     const classes = useStyles();
-    const total = order.services.reduce((acc, el, i) => el.count * el.price + acc, 0);
+    const total = order.order.services.reduce((acc, el, i) => el.count * el.price + acc, 0);
 
     const handlePayment = () => {
       onPayment(order);
@@ -70,19 +74,19 @@ export const HistoryCard
       <Card className={classes.card}>
         <CardContent>
           <Typography variant="h5" component="h2">
-            {order.name}
+            {order.order.name}
           </Typography>
           <Typography className={classes.pos} color="textSecondary">
-            {fortamDate(order.date.toDate())}
+            {fortamDate(order.order.date.toDate())}
           </Typography>
           <Typography component="p" className={classes.payment}>
             Стоимость: {total} BYN
           </Typography>
-          {order.status === Status.Payed && (
-            <Chip color="primary" avatar={<Avatar><CardIcon /></Avatar>} label={order.status} />
+          {order.order.status === Status.Payed && (
+            <Chip color="primary" avatar={<Avatar><CardIcon /></Avatar>} label={order.order.status} />
           )}
-          {order.status === Status.WaitingPayment && (
-            <Chip color="default" onClick={handlePayment} avatar={<Avatar><AttachMoneyIcon /></Avatar>} label={order.status} />
+          {order.order.status === Status.WaitingPayment && (
+            <Chip color="default" onClick={handlePayment} avatar={<Avatar><AttachMoneyIcon /></Avatar>} label={order.order.status} />
           )}
         </CardContent>
 
@@ -94,7 +98,7 @@ export const HistoryCard
           </ExpansionPanelSummary>
           <ExpansionPanelDetails className={classes.services}>
 
-            <PaymentsTable services={order.services} />
+            <PaymentsTable services={order.order.services} />
 
           </ExpansionPanelDetails>
         </ExpansionPanel>
