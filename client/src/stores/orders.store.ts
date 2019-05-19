@@ -32,8 +32,9 @@ export class OrdersStore {
     await this.ordersCollection.add(newOrder)
     runInAction(() => {
       this.isAddInProgress = false;
-      setTimeout(() => { this.findExecuter(newOrder) }, 10000);
     });
+
+    await this.findExecuter(newOrder);
   };
 
   @action public findExecuter = async (order) => {

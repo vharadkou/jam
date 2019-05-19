@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStore } from 'stores';
 import Button from '@material-ui/core/Button';
@@ -85,7 +85,7 @@ const hideWarning = (warnings, index, setWarnings) => {
 export const CreateRequest = observer(({ match: { params: { categoryId } } }: any) => {
   const classes = useStyles();
 
-  const { ordersStore, categoriesStore, authStore } = useStore();
+  const { ordersStore, categoriesStore, authStore, routerStore } = useStore();
 
   const createDefalteData = () => {
     const { categories } = categoriesStore;
@@ -132,6 +132,15 @@ export const CreateRequest = observer(({ match: { params: { categoryId } } }: an
   const [warnings, setWarnings] = useState(ALL_WARNINGS_MESSAGES);
   const [requestData, setRequestData] = useState(createDefalteData());
 
+  const addRow = useCallback(async () => {
+    await ordersStore.addRow(
+      requestData,
+      authStore && authStore.user ? authStore.user.phoneNumber : null
+    );
+
+    routerStore.push('/user/history');
+  }, [])
+
   return (
     <div className={classes.root}>
       <div className="warning">
@@ -171,10 +180,7 @@ export const CreateRequest = observer(({ match: { params: { categoryId } } }: an
       <div className={classes.action}>
         <Button
           className={classes.closeButton}
-          onClick={() => ordersStore.addRow(
-            requestData,
-            authStore && authStore.user ? authStore.user.phoneNumber : null
-          )}
+          onClick={addRow}
         >
           Создать
         </Button>
