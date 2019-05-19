@@ -57,6 +57,9 @@ const useStyles = makeStyles((theme) =>
       backgroundColor: theme.palette.primary.dark,
       color: '#FFFFFF',
     },
+    action: {
+      paddingTop: '8px',
+    },
   })
 );
 
@@ -99,6 +102,9 @@ export const CreateRequest = observer(({ match: { params: { categoryId } } }: an
       }
     }
 
+    let preferredDate = new Date();
+    preferredDate.setTime(preferredDate.getTime() + 4 * 3600 * 1000)
+
     return {
       requestName: {
         value: selectedRequestData ? selectedRequestData.data : selectedRequestData,
@@ -108,7 +114,13 @@ export const CreateRequest = observer(({ match: { params: { categoryId } } }: an
       description: {
         disabled: false,
       },
-      preferredTime: new Date('2019-05-19T21:11:54'),
+      preferredTime: preferredDate,
+      address: {
+        disabled: false,
+      },
+      houseNumber: {
+        disabled: false,
+      }
     };
   }
 
@@ -129,7 +141,7 @@ export const CreateRequest = observer(({ match: { params: { categoryId } } }: an
               className={classes.warning}
               message={(
                 <span className={classes.message}>
-                  <span style={{ textAlign: 'center' }}>Внимание</span>
+                  <span style={{ textAlign: 'center', fontWeight: 1000, }}>Внимание</span>
                   <ul>{warning.messages.map((m, j) => (<li key={j}>{m}</li>))}</ul>
                 </span>
               )}
@@ -156,7 +168,7 @@ export const CreateRequest = observer(({ match: { params: { categoryId } } }: an
           }}
         />
       </div>
-      <div className="action">
+      <div className={classes.action}>
         <Button
           className={classes.closeButton}
           onClick={() => ordersStore.addRow(

@@ -2,6 +2,7 @@ import React from 'react';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { MaterialUIPickers } from './MaterialUIPickers';
+import { AddressInput } from './AdressInput';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -19,6 +20,7 @@ export const RequestData = ({
     handleChange,
     requestName,
     description,
+    houseNumber,
     preferredTime,
 }) => {
     const classes = useStyles();
@@ -55,6 +57,19 @@ export const RequestData = ({
                     handleDateChange={handleChange('preferredTime')}
                     selectedDate={preferredTime}
                 ></MaterialUIPickers>
+            </div>
+            <div>
+                <AddressInput onChange={handleChange('address')}
+                ></AddressInput>
+            </div>
+            <div className={classes.field}>
+                <TextField
+                    key='request'
+                    label={'Номер квартиры'}
+                    value={houseNumber.value}
+                    disabled={houseNumber.disabled}
+                    onChange={handleChange('houseNumber')}
+                />
             </div>
         </div >
     );

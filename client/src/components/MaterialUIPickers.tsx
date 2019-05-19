@@ -23,7 +23,7 @@ class MaterialUIPickersComponent extends React.PureComponent<{
                     <DatePicker
                         key={'datePicker1'}
                         margin="normal"
-                        format="yyyy-mm-dd"
+                        format="yyyy-MM-dd"
                         label={dateLabel}
                         value={selectedDate}
                         onChange={handleDateChange}
