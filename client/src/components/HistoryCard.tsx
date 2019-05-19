@@ -35,7 +35,10 @@ const fortamDate = (date: Date) => {
   return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
 }
 
-enum Status {
+export enum Status {
+  InPool = 'Рассматривается',
+  Accepted = 'Принята',
+  InProgress = 'В процесс',
   WaitingPayment = 'Ожидание оплаты',
   Payed = 'Оплачено'
 }

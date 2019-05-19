@@ -8,9 +8,19 @@ export class OrdersStore {
 
     private ordersCollection = app.firestore().collection('orders');
 
-    @action public addRow = async (order) => {
+    @action public addRow = async (order, phoneNumber) => {
         this.isAddInProgress = true;
-        await this.ordersCollection.add(order)
+        const newOrder = {
+            phoneNumber: phoneNumber,
+            order: {
+                name: order.requestName.value,
+                date: order.preferredTime,
+                services: [],
+                status: 'Рассматривается',
+            },
+        };
+
+        await this.ordersCollection.add(newOrder)
         runInAction(() => {
             this.isAddInProgress = false;
         });

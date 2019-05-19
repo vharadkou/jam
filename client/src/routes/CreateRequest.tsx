@@ -82,7 +82,7 @@ const hideWarning = (warnings, index, setWarnings) => {
 export const CreateRequest = observer(({ match: { params: { categoryId } } }: any) => {
   const classes = useStyles();
 
-  const { ordersStore, categoriesStore } = useStore();
+  const { ordersStore, categoriesStore, authStore } = useStore();
   const { categories, isLoading } = categoriesStore;
 
   const createDefalteData = () => {
@@ -159,7 +159,10 @@ export const CreateRequest = observer(({ match: { params: { categoryId } } }: an
       <div className="action">
         <Button
           className={classes.closeButton}
-          onClick={() => ordersStore.addRow(requestData)}
+          onClick={() => ordersStore.addRow(
+            requestData,
+            authStore && authStore.user ? authStore.user.phoneNumber : null
+          )}
         >
           Создать
         </Button>
