@@ -15,8 +15,16 @@ import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import AllInclusiveIcon from '@material-ui/icons/AllInclusive';
 import HowToRegIcon from '@material-ui/icons/HowToReg';
+import ClearIcon from '@material-ui/icons/Clear';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
 import green from '@material-ui/core/colors/green';
 import { ServicesPopup } from './ServicesPopup';
+import { useStore } from 'stores';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -51,17 +59,18 @@ const useStyles = makeStyles((theme) =>
     },
     chip: {
       backgroundColor: '#303f9f !important',
-    }
+    },
+    rejectChip: {
+      marginRight: 8,
+    },
   })
 
 );
-const fortamDate = (date: Date) =>
-{
+const fortamDate = (date: Date) => {
   return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
 }
 
-export enum Status
-{
+export enum Status {
   InPool = 'Рассматривается',
   Accepted = 'Принята',
   InProgress = 'В процессе',
@@ -69,8 +78,7 @@ export enum Status
   Payed = 'Оплачено'
 }
 
-export interface Order
-{
+export interface Order {
   number: number;
   order: {
     date: any,
@@ -91,30 +99,44 @@ export const HistoryCard
     onStatusUpdate?: (order: Order, status: Status) => void,
     onAdd? : (order: Order, services: any) => void,
     isMaster?: boolean,
-  }) =>
-  {
+  }) => {
     const [expanded, setExpanded] = useState(
       false
     );
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const { ordersStore } = useStore();
     const classes = useStyles();
     const total = order.order.services.reduce((acc, el, i) => el.count * el.price + acc, 0);
 
-    const handlePayment = () =>
-    {
+    const handlePayment = () => {
       onPayment(order);
     }
 
-    const startOrder = () =>
-    {
+    const startOrder = () => {
       onStatusUpdate && onStatusUpdate(order, Status.InProgress);
     }
-    const finishOrder = () =>
-    {
+    const finishOrder = () => {
       onStatusUpdate && onStatusUpdate(order, Status.WaitingPayment);
     }
     const onServicesAdd = (services) =>
     {
       onAdd && onAdd(order, services);
+    }
+
+    const handleReject = () => {
+      setDialogOpen(true)
+    }
+
+    const handleClose = () => {
+      setDialogOpen(false)
+    }
+
+    const reject = async () => {
+      setDialogOpen(false)
+      const newOrder = { ...order }
+      newOrder.order.services = [{ count: 1, price: 3, name: "Консультация" }]
+      await ordersStore.updateOrder(newOrder)
+      await onPayment(newOrder);
     }
 
     return (
@@ -137,6 +159,9 @@ export const HistoryCard
           </Typography>)}
           {!isMaster && order.order.status === Status.Payed && (
             <Chip color="primary" avatar={<Avatar className={classes.chip}><CardIcon /></Avatar>} label={order.order.status} />
+          )}
+          {!isMaster && order.order.status === Status.WaitingPayment && (
+            <Chip className={classes.rejectChip} onClick={handleReject} color="secondary" avatar={<Avatar><ClearIcon /></Avatar>} label='Отмена' />
           )}
           {!isMaster && order.order.status === Status.WaitingPayment && (
             <Chip color="default" onClick={handlePayment} avatar={<Avatar><AttachMoneyIcon /></Avatar>} label={order.order.status} />
@@ -165,7 +190,6 @@ export const HistoryCard
             </div>
           )}
 
-
         </CardContent>
 
         <ExpansionPanel expanded={expanded === true} onChange={event => setExpanded(!expanded)}>
@@ -181,6 +205,30 @@ export const HistoryCard
           </ExpansionPanelDetails>
         </ExpansionPanel>
 
+        <Dialog
+          open={dialogOpen}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Вы уверены что хотите отменить?"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Вы уверены что хотите отменить оказываемые услуги?
+              При отмене заказа вы оплачиваете только услуги консультации.
+        </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Отмена
+          </Button>
+            <Button onClick={reject} color="primary" autoFocus>
+              Согласен
+          </Button>
+          </DialogActions>
+        </Dialog>
       </Card>
     );
   };

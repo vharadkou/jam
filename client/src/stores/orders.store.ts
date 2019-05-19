@@ -145,4 +145,17 @@ export class OrdersStore
       });
     }
   }
+
+  @action public updateOrder = async (newOrder) => {
+    const order = this.ordersQuery!.find(order => order.data().number === newOrder.number);
+
+    if (order) {
+      await this.ordersCollection.doc(order.id).update({
+        order: {
+          ...order.data().order,
+          services: newOrder.order.services,
+        }
+      });
+    }
+  }
 }
