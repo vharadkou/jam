@@ -11,6 +11,9 @@ const useStyles = makeStyles(theme =>
     media: {
       height: 140,
     },
+    text: {
+      textAlign: 'center',
+    }
   })
 );
 
@@ -33,7 +36,7 @@ export const RoleCard = memo(({ className, text, image, onClick }: Props) => {
           title="Contemplative Reptile"
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
+          <Typography gutterBottom variant="h5" component="h2" className={classes.text}>
             {text}
           </Typography>
         </CardContent>

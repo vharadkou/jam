@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme =>
   createStyles({
     root: {},
     card: {
-      maxWidth: 345,
+      width: 200,
       margin: theme.spacing(1)
     },
     header: {
