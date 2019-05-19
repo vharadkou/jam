@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme) =>
     pos: {
       marginBottom: 12,
     },
+    posL: {
+      marginBottom: 6,
+    },
     services: {
       padding: 0,
     },
@@ -72,6 +75,8 @@ export interface Order
   order: {
     date: any,
     name: string,
+    address: string,
+    apartmentNumber: string,
     services:
     { name: string, count: number, price: number }[],
     status: string
@@ -124,6 +129,12 @@ export const HistoryCard
           <Typography component="p" className={classes.payment}>
             Стоимость: {total} BYN
           </Typography>
+          <Typography className={classes.posL} color="textSecondary">
+            Адрес: {order.order.address}
+          </Typography>
+          {order.order.apartmentNumber && (<Typography className={classes.pos} color="textSecondary">
+            Квартира: {order.order.apartmentNumber}
+          </Typography>)}
           {!isMaster && order.order.status === Status.Payed && (
             <Chip color="primary" avatar={<Avatar className={classes.chip}><CardIcon /></Avatar>} label={order.order.status} />
           )}
