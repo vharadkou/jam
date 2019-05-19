@@ -33,7 +33,7 @@ export class PaymentStore {
             value: String(total),
             currency: this.currency,
           },
-          label: 'Total'
+          label: 'Итого'
         }
       });
       const canMakePayment = await payment.canMakePayment();
