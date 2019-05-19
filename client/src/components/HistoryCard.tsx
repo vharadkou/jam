@@ -39,7 +39,8 @@ export const HistoryCard
     order:
     {
       date: any, name: string, services:
-      { name: string, count: number, price: number }[]
+      { name: string, count: number, price: number }[],
+      payed: boolean
     }
   }) => {
     const [expanded, setExpanded] = useState(
@@ -60,7 +61,11 @@ export const HistoryCard
           <Typography component="p" className={classes.payment}>
             Стоимость: {total} р
           </Typography>
-          <Chip color="primary" avatar={<Avatar><CardIcon /></Avatar>} label="Оплачено" />
+          {order.payed ? (
+            <Chip color="primary" avatar={<Avatar><CardIcon /></Avatar>} label="Оплачено" />
+          ) : (
+              <Chip color="primary" avatar={<Avatar><CardIcon /></Avatar>} label="Оплачено" />
+            )}
         </CardContent>
 
         <ExpansionPanel expanded={expanded === true} onChange={event => setExpanded(!expanded)}>

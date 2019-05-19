@@ -11,8 +11,6 @@ export const PublicRoute = ({ component: Component, isAuth, role, ...rest }: Pro
     <Route
       {...rest}
       render={props => {
-        console.log('public router', rest);
-        
         return (
           isAuth && !role ? (<Redirect to="/role" />) :
             !isAuth && Component ? (

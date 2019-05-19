@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme =>
 export const UserCategories = observer(() => {
   const classes = useStyles();
   const { categoriesStore, routerStore } = useStore();
-  const { categories, isLoading } = categoriesStore
+  const { categories } = categoriesStore
 
   useEffect(() => {
     categoriesStore.load('categories')

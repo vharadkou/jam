@@ -76,8 +76,8 @@ export const Home = observer(() => {
           {userData.role === 'client' ? (
             <React.Fragment>
               <HomeCard className={classes.card} text='Популярные' image={WhatshotIcon} onClick={openPopular} />
-              <HomeCard className={classes.card} text='Каталог' image={ListIcon} onClick={openCatalog} />
-              <HomeCard className={classes.card} text='Исследование' image={HelpIcon} onClick={openSearch} />
+              <HomeCard className={classes.card} text='Категории' image={ListIcon} onClick={openCatalog} />
+              <HomeCard className={classes.card} text='Консультация' image={HelpIcon} onClick={openSearch} />
               <HomeCard className={classes.card} text='История' image={HistoryIcon} onClick={openHistory} />
               <HomeCard className={classes.card} text='Карта' image={CreditCardIcon} />
               <HomeCard className={classes.card} text='Профиль' image={AccountBoxIcon} />

@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 
 import Paper from '@material-ui/core/Paper';
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles(theme =>
   createStyles({
     root: {
       width: '100%',
@@ -21,7 +21,7 @@ const useStyles = makeStyles(() =>
     row: {
     },
     cell: {
-      padding: '5px',
+      padding: theme.spacing(1),
       minWidth: '40px',
       textAlign: 'start',
     },
@@ -37,8 +37,7 @@ const headers = ['Оказанная услуга', 'Кол., шт', 'Цена, 
 
 export const PaymentsTable
   = ({ services, showTotal }:
-    { services: { name: string, price: number, count: number }[], showTotal?: boolean }) =>
-  {
+    { services: { name: string, price: number, count: number }[], showTotal?: boolean }) => {
     const classes = useStyles();
     const records = services.map(it => [it.name, it.count, it.price, it.count * it.price]);
     const total = records.reduce((acc, it, i) => (+it[it.length - 1] + acc), 0)

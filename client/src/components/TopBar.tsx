@@ -9,6 +9,8 @@ import { observer } from 'mobx-react-lite';
 import { useStore } from 'stores';
 import IconButton from '@material-ui/core/IconButton';
 import Arrowback from '@material-ui/icons/ArrowBack';
+import HomeIcon from '@material-ui/icons/Home';
+import { matchPath } from 'react-router';
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -16,10 +18,14 @@ const useStyles = makeStyles(theme =>
       flexGrow: 1,
     },
     menuButton: {
-      marginRight: theme.spacing(2),
+      marginRight: 0,
     },
     toolbar: {
       justifyContent: 'space-between'
+    },
+    logo: {
+      display: 'flex',
+      alignItems: 'center'
     }
   })
 );
@@ -39,24 +45,46 @@ export const TopBar = observer((props: any) => {
   const isHome = routerStore.location.pathname === '/user/home' ||
     routerStore.location.pathname === '/master/home';
 
+  const name = matchPath(routerStore.location.pathname, '/user/history') ? 'История' :
+    matchPath(routerStore.location.pathname, '/user/categories') ? 'Категории' :
+      matchPath(routerStore.location.pathname, '/user/requests') ? 'Услуги' :
+        matchPath(routerStore.location.pathname, '/user/request/create') ? 'Заявка' :
+          matchPath(routerStore.location.pathname, '/user/popular') ? 'Популярные' :
+            '';
+
   return (
     <div className={classes.root}>
       <AppBar position="absolute">
         <Toolbar className={classes.toolbar}>
           {isHome ? (
-            <Typography variant="h6">
-              Главная
-            </Typography>
-          ) : (
+            <div className={classes.logo}>
               <IconButton
                 edge="start"
                 className={classes.menuButton}
                 color="inherit"
                 aria-label="Menu"
-                onClick={back}
               >
-                <Arrowback />
+                <HomeIcon />
               </IconButton>
+              <Typography variant="h6">
+                Главная
+              </Typography>
+            </div>
+          ) : (
+              <div className={classes.logo}>
+                <IconButton
+                  edge="start"
+                  className={classes.menuButton}
+                  color="inherit"
+                  aria-label="Menu"
+                  onClick={back}
+                >
+                  <Arrowback />
+                </IconButton>
+                <Typography variant="h6">
+                  {name}
+                </Typography>
+              </div>
             )}
           {authStore.user ? (
             <Button color="inherit" onClick={authStore.logout}>
