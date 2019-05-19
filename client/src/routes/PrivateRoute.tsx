@@ -13,7 +13,7 @@ export const PrivateRoute = ({ component: Component, isAuth, role, ...rest }: Pr
       render={props => {
         console.log('private router', rest);
         return (
-          !role ? (<Redirect to="/role" />) :
+          isAuth && !role ? (<Redirect to="/role" />) :
             isAuth && Component ? (
               <Component {...props} />
             ) : (

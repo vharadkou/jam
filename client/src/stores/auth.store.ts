@@ -33,6 +33,9 @@ export class AuthStore {
         } else if (this.usersUnsubscribe) {
           this.usersUnsubscribe();
           this.usersUnsubscribe = undefined;
+          this.isLoading = false;
+        } else {
+          this.isLoading = false;
         }
       });
     });
@@ -74,7 +77,7 @@ export class AuthStore {
           defaultCountry: 'BY',
         },
       ],
-      signInSuccessUrl: '/home',
+      signInSuccessUrl: '/role',
       signInFlow: 'redirect',
     };
   }

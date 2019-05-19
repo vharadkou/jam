@@ -32,11 +32,11 @@ export const SwitchRole = observer(() => {
 
   const manRole = useCallback(() => {
     authStore.updateUser('client');
-  }, [authStore]);
+  }, []);
 
   const workerRole = useCallback(() => {
     authStore.updateUser('employee');
-  }, [authStore]);
+  }, []);
 
   if (authStore.userData && authStore.userData.role) {
     if (authStore.userData.role === 'client') {
