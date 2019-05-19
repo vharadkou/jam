@@ -97,13 +97,13 @@ export const CreateRequest = observer(({ match: { params: { categoryId } } }: an
         {
           warnings
             .filter(w => w.isVisible)
-            .map((warning) => (<div className={classes.snackbar}>
+            .map((warning, i) => (<div key={i} className={classes.snackbar}>
               <SnackbarContent
                 className={classes.warning}
                 message={(
                   <span className={classes.message}>
                     <span style={{ textAlign: 'center' }}>Внимание</span>
-                    <ul>{warning.messages.map(m => (<li>{m}</li>))}</ul>
+                    <ul>{warning.messages.map((m, j) => (<li key={j}>{m}</li>))}</ul>
                   </span>
                 )}
                 action={[

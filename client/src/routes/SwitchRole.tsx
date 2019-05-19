@@ -39,7 +39,13 @@ export const SwitchRole = observer(() => {
   }, [authStore]);
 
   if (authStore.userData && authStore.userData.role) {
-    return <Redirect to="/home" />
+    if (authStore.userData.role === 'client') {
+      return <Redirect to="/user/home" />
+    }
+
+    if (authStore.userData.role === 'employee') {
+      return <Redirect to="/master/home" />
+    }
   }
 
   return (

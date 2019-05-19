@@ -10,13 +10,18 @@ export const PublicRoute = ({ component: Component, isAuth, role, ...rest }: Pro
   return (
     <Route
       {...rest}
-      render={props =>
-        !role ? (<Redirect to="/role" />) :
-          !isAuth && Component ? (
-            <Component {...props} />
-          ) : (
-              <Redirect to="/home" />
-            )
+      render={props => {
+        console.log('public router', rest);
+        
+        return (
+          !role ? (<Redirect to="/role" />) :
+            !isAuth && Component ? (
+              <Component {...props} />
+            ) : (
+                <Redirect to="/home" />
+              )
+        )
+      }
       }
     />
   );

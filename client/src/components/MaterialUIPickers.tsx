@@ -21,14 +21,14 @@ class MaterialUIPickersComponent extends React.PureComponent<{
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Grid container className={classes.grid} justify="space-around">
                     <DatePicker
-                        key={'datePicker'}
+                        key={'datePicker1'}
                         margin="normal"
                         label={dateLabel}
                         value={selectedDate}
                         onChange={handleDateChange}
                     />
                     <TimePicker
-                        key={'datePicker'}
+                        key={'datePicker2'}
                         margin="normal"
                         label={timeLabel}
                         value={selectedDate}
