@@ -12,6 +12,9 @@ import Chip from '@material-ui/core/Chip';
 import Avatar from '@material-ui/core/Avatar';
 import CardIcon from '@material-ui/icons/CreditCard';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
+import AllInclusiveIcon from '@material-ui/icons/AllInclusive';
+import HowToRegIcon from '@material-ui/icons/HowToReg';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -87,6 +90,15 @@ export const HistoryCard
           )}
           {order.order.status === Status.WaitingPayment && (
             <Chip color="default" onClick={handlePayment} avatar={<Avatar><AttachMoneyIcon /></Avatar>} label={order.order.status} />
+          )}
+          {order.order.status === Status.InProgress && (
+            <Chip color="default" onClick={handlePayment} avatar={<Avatar><AllInclusiveIcon /></Avatar>} label={order.order.status} />
+          )}
+          {order.order.status === Status.Accepted && (
+            <Chip color="default" onClick={handlePayment} avatar={<Avatar><HowToRegIcon /></Avatar>} label={order.order.status} />
+          )}
+          {order.order.status === Status.InPool && (
+            <Chip color="default" onClick={handlePayment} avatar={<Avatar><HourglassEmptyIcon /></Avatar>} label={order.order.status} />
           )}
         </CardContent>
 
