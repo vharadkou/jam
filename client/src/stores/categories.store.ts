@@ -19,7 +19,7 @@ export class CategoriesStore {
     @action public load = (collactionName) => {
         this.isLoading = true;
         const firebaseCategories = app.firestore().collection(collactionName);
-        firebaseCategories.get()
+        return firebaseCategories.get()
             .then((snapshot) => {
                 runInAction(() => {
                     this.isLoading = false;

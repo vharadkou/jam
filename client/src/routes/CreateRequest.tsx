@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStore } from 'stores';
 import Button from '@material-ui/core/Button';
@@ -7,6 +7,7 @@ import amber from '@material-ui/core/colors/amber';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { RequestData } from 'components/RequestData';
+import { Value } from 'stores/categories.store';
 
 const baseUnit = 2;
 
@@ -49,7 +50,13 @@ const useStyles = makeStyles((theme) =>
     },
     data: {
       padding: baseUnit,
-    }
+    },
+    closeButton: {
+      marginLeft: theme.spacing(2),
+      fontSize: 16,
+      backgroundColor: theme.palette.primary.dark,
+      color: '#FFFFFF',
+    },
   })
 );
 
@@ -72,66 +79,88 @@ const hideWarning = (warnings, index, setWarnings) => {
   setWarnings(newWarns);
 }
 
-const defaultRequest = {
-  requestName: {
-    disabled: true,
-  },
-  description: {
-    disabled: false,
-  },
-  preferredTime: new Date('2014-08-18T21:11:54'),
-};
-
 export const CreateRequest = observer(({ match: { params: { categoryId } } }: any) => {
   const classes = useStyles();
 
-  const { ordersStore } = useStore();
+  const { ordersStore, categoriesStore } = useStore();
+  const { categories, isLoading } = categoriesStore;
+
+  const createDefalteData = () => {
+    let selectedRequestData: Value | undefined = undefined;
+
+    if (categories) {
+      const selectedCategoryIndex = categories
+        .findIndex((category) => category.values !== undefined &&
+          category.values.find((value) => value.id === categoryId) !== undefined);
+      if (selectedCategoryIndex !== -1) {
+        selectedRequestData = categories[selectedCategoryIndex].values
+          .find((value) => value.id === categoryId);
+      }
+    }
+
+    return {
+      requestName: {
+        value: selectedRequestData ? selectedRequestData.data : selectedRequestData,
+        disabled: true,
+      },
+      description: {
+        disabled: false,
+      },
+      preferredTime: new Date('2014-08-18T21:11:54'),
+    };
+  }
+
+  useEffect(() => {
+    if (!isLoading && categories === null) {
+      categoriesStore.load('categories')
+        .then(() => setRequestData(createDefalteData()));
+    }
+  }, [categoriesStore, isLoading, categories])
 
   const [warnings, setWarnings] = useState(ALL_WARNINGS_MESSAGES);
-
-  const [requestData, setRequestData] = useState(defaultRequest);
+  const [requestData, setRequestData] = useState(createDefalteData());
 
   return (
     <div className={classes.root}>
       <div className="warning">
-        {
-          warnings
-            .filter(w => w.isVisible)
-            .map((warning, i) => (<div key={i} className={classes.snackbar}>
-              <SnackbarContent
-                className={classes.warning}
-                message={(
-                  <span className={classes.message}>
-                    <span style={{ textAlign: 'center' }}>Внимание</span>
-                    <ul>{warning.messages.map((m, j) => (<li key={j}>{m}</li>))}</ul>
-                  </span>
-                )}
-                action={[
-                  <Button
-                    key="close"
-                    aria-label="Close"
-                    variant="contained"
-                    onClick={hideWarning.bind(null, warnings, warning.index, setWarnings)}
-                  >
-                    <span>Закрыть</span>
-                  </Button>,
-                ]}
-              ></SnackbarContent>
-            </div>))
-        }
+        {warnings.filter(w => w.isVisible)
+          .map((warning, i) => (<div key={i} className={classes.snackbar}>
+            <SnackbarContent
+              className={classes.warning}
+              message={(
+                <span className={classes.message}>
+                  <span style={{ textAlign: 'center' }}>Внимание</span>
+                  <ul>{warning.messages.map((m, j) => (<li key={j}>{m}</li>))}</ul>
+                </span>
+              )}
+              action={[
+                <Button
+                  key="close"
+                  aria-label="Close"
+                  variant="contained"
+                  onClick={hideWarning.bind(null, warnings, warning.index, setWarnings)}
+                >
+                  <span>Закрыть</span>
+                </Button>,
+              ]}
+            />
+          </div>))}
       </div>
       <div className={classes.data}>
         <RequestData
+          {...requestData}
           handleChange={(fieldName) => value => {
             let data = { ...requestData }
             data[fieldName] = value;
             setRequestData(data);
           }}
-          {...requestData}
-        ></RequestData>
+        />
       </div>
       <div className="action">
-        <Button onClick={() => ordersStore.addRow(requestData)}>
+        <Button
+          className={classes.closeButton}
+          onClick={() => ordersStore.addRow(requestData)}
+        >
           Создать
         </Button>
       </div>
