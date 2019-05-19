@@ -15,6 +15,7 @@ import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import AllInclusiveIcon from '@material-ui/icons/AllInclusive';
 import HowToRegIcon from '@material-ui/icons/HowToReg';
+import green from '@material-ui/core/colors/green';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -30,15 +31,31 @@ const useStyles = makeStyles((theme) =>
     },
     payment: {
       margin: theme.spacing(1)
+    },
+    buttons: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    finish: {
+      marginTop: '5px',
+      backgroundColor: green[500],
+      '&:hover': {
+        backgroundColor: green[700],
+      },
     }
+
   })
 
 );
-const fortamDate = (date: Date) => {
+const fortamDate = (date: Date) =>
+{
   return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
 }
 
-export enum Status {
+export enum Status
+{
   InPool = 'Рассматривается',
   Accepted = 'Принята',
   InProgress = 'В процессе',
@@ -46,7 +63,8 @@ export enum Status {
   Payed = 'Оплачено'
 }
 
-export interface Order {
+export interface Order
+{
   number: number;
   order: {
     date: any,
@@ -59,19 +77,37 @@ export interface Order {
 }
 
 export const HistoryCard
-  = ({ order, onPayment }: {
+  = ({ order, onPayment, onStatusUpdate, isMaster }: {
     order: Order,
-    onPayment: (order: Order) => void
-  }) => {
+    onPayment: (order: Order) => void,
+    onStatusUpdate?: (order: Order, status: Status) => void,
+    isMaster?: boolean,
+  }) =>
+  {
     const [expanded, setExpanded] = useState(
       false
     );
     const classes = useStyles();
     const total = order.order.services.reduce((acc, el, i) => el.count * el.price + acc, 0);
 
-    const handlePayment = () => {
+    const handlePayment = () =>
+    {
       onPayment(order);
     }
+
+    const startOrder = () =>
+    {
+      onStatusUpdate && onStatusUpdate(order, Status.InProgress);
+    }
+    const finishOrder = () =>
+    {
+      onStatusUpdate && onStatusUpdate(order, Status.WaitingPayment);
+    }
+    const addService = () =>
+    {
+      console.log('add service');
+    }
+
 
     return (
       <Card className={classes.card}>
@@ -85,10 +121,10 @@ export const HistoryCard
           <Typography component="p" className={classes.payment}>
             Стоимость: {total} BYN
           </Typography>
-          {order.order.status === Status.Payed && (
+          {!isMaster && order.order.status === Status.Payed && (
             <Chip color="primary" avatar={<Avatar><CardIcon /></Avatar>} label={order.order.status} />
           )}
-          {order.order.status === Status.WaitingPayment && (
+          {!isMaster && order.order.status === Status.WaitingPayment && (
             <Chip color="default" onClick={handlePayment} avatar={<Avatar><AttachMoneyIcon /></Avatar>} label={order.order.status} />
           )}
           {order.order.status === Status.InProgress && (
@@ -100,6 +136,22 @@ export const HistoryCard
           {order.order.status === Status.InPool && (
             <Chip color="default" onClick={handlePayment} avatar={<Avatar><HourglassEmptyIcon /></Avatar>} label={order.order.status} />
           )}
+          {isMaster && order.order.status === Status.Accepted && (
+            <Chip color="secondary" onClick={startOrder} label={'Начать'} />
+          )}
+          {isMaster && order.order.status === Status.InProgress && (
+            <div className={classes.buttons}>
+              <Chip color="default" onClick={addService} label={'Добавить услугу'} />
+              <Chip className={classes.finish} onClick={finishOrder} label={'Завершить'} />
+            </div>
+          )}
+          {isMaster && [Status.WaitingPayment, Status.Payed].indexOf(order.order.status as Status)!==-1 && (
+            <div className={classes.buttons}>
+              <Chip color="default" label={'Завершено'} />
+            </div>
+          )}
+
+
         </CardContent>
 
         <ExpansionPanel expanded={expanded === true} onChange={event => setExpanded(!expanded)}>

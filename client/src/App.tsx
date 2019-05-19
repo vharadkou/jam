@@ -9,6 +9,7 @@ import { Payments } from 'routes/Payments';
 import { CreateRequest } from 'routes/CreateRequest';
 import { History } from 'routes/History';
 import { PrivateRoute } from 'routes/PrivateRoute';
+import { Schedule } from 'routes/Schedule';
 import { PublicRoute } from 'routes/PublicRoute';
 import { SwitchRole } from 'routes/SwitchRole';
 import { UserCategories } from 'routes/UserCategories';
@@ -90,6 +91,7 @@ const DefaultContainer = ({ isAuth, role }: ContainerProps) => {
               <Route exact path="/" render={() => <Redirect to="/master/home" />} />
               <Route exact path="/master" render={() => <Redirect to="/master/home" />} />
               <PrivateRoute isAuth={isAuth} role={role} path="/master/home" component={Home} />
+              <PrivateRoute isAuth={isAuth} role={role} path="/master/schedule" component={Schedule} />
             </>
           )}
       </div>

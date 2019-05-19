@@ -61,6 +61,10 @@ export const Home = observer(() => {
     routerStore.push('/user/history');
   }, [routerStore]);
 
+  const openSchedule = useCallback(() => {
+    routerStore.push('/master/schedule');
+  }, [routerStore]);
+
   return (
     <div className={classes.root}>
       <header className={classes.header}>
@@ -76,8 +80,8 @@ export const Home = observer(() => {
             </React.Fragment>
           ) : (
               <React.Fragment>
-                <HomeCard className={classes.card} text='Задачи' image={WhatshotIcon} />
-                <HomeCard className={classes.card} text='График' image={CalendarTodayIcon} />
+                <HomeCard className={classes.card} text='Задачи' image={WhatshotIcon}  onClick={openSchedule}/>
+                <HomeCard className={classes.card} text='График' image={CalendarTodayIcon}/>
                 <HomeCard className={classes.card} text='Рейтинг' image={StarRateIcon} />
                 <HomeCard className={classes.card} text='История' image={HistoryIcon} />
               </React.Fragment>

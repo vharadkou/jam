@@ -32,26 +32,21 @@ const useStyles = makeStyles(theme =>
   })
 );
 
-export const History = observer(() => {
+export const Schedule = observer(() => {
   const classes = useStyles();
   const { ordersStore, authStore, paymentStore } = useStore();
 
   useEffect(() => {
     if (authStore.user)
-      ordersStore.load(authStore.user.phoneNumber)
+      ordersStore.loadAsMaster(authStore.user.phoneNumber)
   }, [])
 
-  const makePayment = useCallback(async (order: Order) => {
-    const payments = order.order.services.map(service => ({
-      label: service.name,
-      value: service.price.toString(),
-    }))
+  const updateOrderStatus = useCallback(async (order: Order, status) => {
 
-    await paymentStore.showPayment(payments);
-    await ordersStore.updatePaymentStatus(order.number);
+    await ordersStore.updateStatus(order.number,status);
 
     if (authStore.user) {
-      ordersStore.load(authStore.user.phoneNumber);
+      ordersStore.loadAsMaster(authStore.user.phoneNumber);
     }
   }, [])
 
@@ -63,7 +58,7 @@ export const History = observer(() => {
             ordersStore
               .Orders
               .map((order, i) => <div key={i} className={classes.card}>
-                <HistoryCard order={order} onPayment={makePayment} onStatusUpdate={()=>{}}/> </div>)
+                <HistoryCard order={order} onPayment={()=>{}} onStatusUpdate={updateOrderStatus} isMaster={true}/> </div>)
             : null
         }
       </div>
