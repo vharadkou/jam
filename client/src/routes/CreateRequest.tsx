@@ -107,7 +107,7 @@ export const CreateRequest = observer(({ match: { params: { categoryId } } }: an
       description: {
         disabled: false,
       },
-      preferredTime: new Date('2014-08-18T21:11:54'),
+      preferredTime: new Date('2019-05-19T21:11:54'),
     };
   }
 

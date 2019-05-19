@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) =>
         field: {
             marginLeft: theme.spacing(2),
             '& .MuiFormControl-root': {
-                width: '320px',
+                width: '100%',
             },
         },
     })
