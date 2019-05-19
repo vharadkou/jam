@@ -201,7 +201,7 @@ export const HistoryCard
           </ExpansionPanelSummary>
           <ExpansionPanelDetails className={classes.services}>
 
-            <PaymentsTable services={order.order.services} />
+            <PaymentsTable showTotal={true} services={order.order.services} />
 
           </ExpansionPanelDetails>
         </ExpansionPanel>
