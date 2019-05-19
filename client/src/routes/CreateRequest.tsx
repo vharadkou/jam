@@ -142,9 +142,9 @@ export const CreateRequest = observer(({ match: { params: { categoryId } } }: an
   const [warnings] = useState(ALL_WARNINGS_MESSAGES);
   const [requestData, setRequestData] = useState(createDefalteData());
 
-  const addRow = useCallback(async () => {
+  const addRow = useCallback(async (data) => {
     await ordersStore.addRow(
-      requestData,
+      data,
       authStore && authStore.user ? authStore.user.phoneNumber : null
     );
 
@@ -166,7 +166,7 @@ export const CreateRequest = observer(({ match: { params: { categoryId } } }: an
       <div className={classes.action}>
         <Button
           className={classes.closeButton}
-          onClick={addRow}
+          onClick={() => addRow(requestData)}
         >
           Создать
         </Button>
