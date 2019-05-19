@@ -32,20 +32,35 @@ const useStyles = makeStyles(theme =>
   })
 );
 
-export const Schedule = observer(() => {
+export const Schedule = observer(() =>
+{
   const classes = useStyles();
   const { ordersStore, authStore, paymentStore } = useStore();
 
-  useEffect(() => {
+  useEffect(() =>
+  {
     if (authStore.user)
       ordersStore.loadAsMaster(authStore.user.phoneNumber)
   }, [])
 
-  const updateOrderStatus = useCallback(async (order: Order, status) => {
+  const updateOrderStatus = useCallback(async (order: Order, status) =>
+  {
 
-    await ordersStore.updateStatus(order.number,status);
+    await ordersStore.updateStatus(order.number, status);
 
-    if (authStore.user) {
+    if (authStore.user)
+    {
+      ordersStore.loadAsMaster(authStore.user.phoneNumber);
+    }
+  }, [])
+
+
+  const addServices = useCallback(async (order: Order, services) =>
+  {
+
+    await ordersStore.addServices(order.number, services);
+    if (authStore.user)
+    {
       ordersStore.loadAsMaster(authStore.user.phoneNumber);
     }
   }, [])
@@ -58,7 +73,7 @@ export const Schedule = observer(() => {
             ordersStore
               .Orders
               .map((order, i) => <div key={i} className={classes.card}>
-                <HistoryCard order={order} onPayment={()=>{}} onStatusUpdate={updateOrderStatus} isMaster={true}/> </div>)
+                <HistoryCard order={order} onPayment={() => { }} onStatusUpdate={updateOrderStatus} onAdd={addServices} isMaster={true} /> </div>)
             : null
         }
       </div>

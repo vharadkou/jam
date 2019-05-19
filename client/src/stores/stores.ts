@@ -5,6 +5,7 @@ import { AuthStore } from './auth.store';
 import { RowsStore } from './rows.store';
 import { OrdersStore } from './orders.store';
 import { CategoriesStore } from './categories.store';
+import { ServicesStore } from './services.store';
 import { PaymentStore } from './payment.store';
 
 const routerStore = new RouterStore();
@@ -13,6 +14,7 @@ const rowsStore = new RowsStore();
 const ordersStore = new OrdersStore();
 const categoriesStore = new CategoriesStore();
 const paymentStore = new PaymentStore();
+const servicesStore = new ServicesStore();
 
 const stores = Object.freeze({
   routerStore,
@@ -21,6 +23,7 @@ const stores = Object.freeze({
   ordersStore,
   categoriesStore,
   paymentStore,
+  servicesStore,
 });
 
 const StoreContext = createContext(stores);

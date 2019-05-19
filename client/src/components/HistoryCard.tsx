@@ -16,6 +16,7 @@ import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import AllInclusiveIcon from '@material-ui/icons/AllInclusive';
 import HowToRegIcon from '@material-ui/icons/HowToReg';
 import green from '@material-ui/core/colors/green';
+import { ServicesPopup } from './ServicesPopup';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -79,10 +80,11 @@ export interface Order
 }
 
 export const HistoryCard
-  = ({ order, onPayment, onStatusUpdate, isMaster }: {
+  = ({ order, onPayment, onStatusUpdate, onAdd, isMaster }: {
     order: Order,
     onPayment: (order: Order) => void,
     onStatusUpdate?: (order: Order, status: Status) => void,
+    onAdd? : (order: Order, services: any) => void,
     isMaster?: boolean,
   }) =>
   {
@@ -105,9 +107,9 @@ export const HistoryCard
     {
       onStatusUpdate && onStatusUpdate(order, Status.WaitingPayment);
     }
-    const addService = () =>
+    const onServicesAdd = (services) =>
     {
-      console.log('add service');
+      onAdd && onAdd(order, services);
     }
 
     return (
@@ -142,11 +144,11 @@ export const HistoryCard
           )}
           {isMaster && order.order.status === Status.InProgress && (
             <div className={classes.buttons}>
-              <Chip color="default" onClick={addService} label={'Добавить услугу'} />
+              <ServicesPopup selectedServices={order.order.services} onServicesAdd={onServicesAdd} />
               <Chip className={classes.finish} onClick={finishOrder} label={'Завершить'} />
             </div>
           )}
-          {isMaster && [Status.WaitingPayment, Status.Payed].indexOf(order.order.status as Status)!==-1 && (
+          {isMaster && [Status.WaitingPayment, Status.Payed].indexOf(order.order.status as Status) !== -1 && (
             <div className={classes.buttons}>
               <Chip color="default" label={'Завершено'} />
             </div>

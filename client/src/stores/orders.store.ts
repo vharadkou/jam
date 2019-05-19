@@ -3,7 +3,8 @@ import { app } from 'firebase.config';
 import uuidv4 from 'uuid/v4';
 import { Status } from 'components/HistoryCard';
 
-export class OrdersStore {
+export class OrdersStore
+{
   @observable public Orders?: any[];
   @observable public ordersQuery?: firebase.firestore.QueryDocumentSnapshot[];
   @observable public isLoading = false;
@@ -12,7 +13,8 @@ export class OrdersStore {
   private usersCollection = app.firestore().collection('users');
   private ordersCollection = app.firestore().collection('orders');
 
-  @action public addRow = async (order, phoneNumber) => {
+  @action public addRow = async (order, phoneNumber) =>
+  {
     this.isAddInProgress = true;
     const newOrder = {
       number: uuidv4(),
@@ -34,21 +36,24 @@ export class OrdersStore {
     };
 
     await this.ordersCollection.add(newOrder)
-    runInAction(() => {
+    runInAction(() =>
+    {
       this.isAddInProgress = false;
     });
 
     await this.findExecuter(newOrder);
   };
 
-  @action public findExecuter = async (order) => {
+  @action public findExecuter = async (order) =>
+  {
     const snapshot = await this.ordersCollection
       .where('phoneNumber', '==', order.phoneNumber)
       .get();
 
     const editOrder = snapshot.docs.find(o => o.data().number === order.number);
 
-    if (editOrder) {
+    if (editOrder)
+    {
       const executor = (await this.getExecuterPhineName());
       console.log('DDD', executor);
       await this.ordersCollection.doc(editOrder.id).update({
@@ -61,7 +66,8 @@ export class OrdersStore {
     }
   }
 
-  public getExecuterPhineName = async () => {
+  public getExecuterPhineName = async () =>
+  {
     const usersSnapshot = await this.usersCollection.where('role', '==', 'employee').get();
 
     const users: any[] = [];
@@ -69,7 +75,8 @@ export class OrdersStore {
     return users[0];
   }
 
-  @action public load = async (phoneNumber) => {
+  @action public load = async (phoneNumber) =>
+  {
     this.isLoading = true;
     const snapshot = await this.ordersCollection
       .where('phoneNumber', '==', phoneNumber)
@@ -81,7 +88,8 @@ export class OrdersStore {
     runInAction(() => this.isLoading = false);
   }
 
-  @action public loadAsMaster = async (phoneNumber) => {
+  @action public loadAsMaster = async (phoneNumber) =>
+  {
     this.isLoading = true;
     const snapshot = await this.ordersCollection
       .where('executor', '==', phoneNumber)
@@ -93,10 +101,12 @@ export class OrdersStore {
     runInAction(() => this.isLoading = false);
   }
 
-  @action public updatePaymentStatus = async (number: number) => {
+  @action public updatePaymentStatus = async (number: number) =>
+  {
     const order = this.ordersQuery!.find(order => order.data().number === number);
 
-    if (order) {
+    if (order)
+    {
       await this.ordersCollection.doc(order.id).update({
         order: {
           ...order.data().order,
@@ -106,14 +116,31 @@ export class OrdersStore {
     }
   }
 
-  @action public updateStatus = async (number: number, status: string) => {
+  @action public updateStatus = async (number: number, status: string) =>
+  {
     const order = this.ordersQuery!.find(order => order.data().number === number);
 
-    if (order) {
+    if (order)
+    {
       await this.ordersCollection.doc(order.id).update({
         order: {
           ...order.data().order,
           status: status,
+        }
+      });
+    }
+  }
+
+  @action public addServices = async (number: number, services: { name: string, count: number, price: number }[]) =>
+  {
+    const order = this.ordersQuery!.find(order => order.data().number === number);
+
+    if (order)
+    {
+      await this.ordersCollection.doc(order.id).update({
+        order: {
+          ...order.data().order,
+          services: [...order.data().order.services, ...services]
         }
       });
     }
