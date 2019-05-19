@@ -97,13 +97,14 @@ export const HistoryCard
     order: Order,
     onPayment: (order: Order) => void,
     onStatusUpdate?: (order: Order, status: Status) => void,
-    onAdd? : (order: Order, services: any) => void,
+    onAdd?: (order: Order, services: any) => void,
     isMaster?: boolean,
   }) => {
     const [expanded, setExpanded] = useState(
       false
     );
     const [dialogOpen, setDialogOpen] = useState(false);
+    const [isButtonVisible, setButtonVisible] = useState(true);
     const { ordersStore } = useStore();
     const classes = useStyles();
     const total = order.order.services.reduce((acc, el, i) => el.count * el.price + acc, 0);
@@ -118,8 +119,7 @@ export const HistoryCard
     const finishOrder = () => {
       onStatusUpdate && onStatusUpdate(order, Status.WaitingPayment);
     }
-    const onServicesAdd = (services) =>
-    {
+    const onServicesAdd = (services) => {
       onAdd && onAdd(order, services);
     }
 
@@ -137,6 +137,7 @@ export const HistoryCard
       newOrder.order.services = [{ count: 1, price: 3, name: "Консультация" }]
       await ordersStore.updateOrder(newOrder)
       await onPayment(newOrder);
+      setButtonVisible(false)
     }
 
     return (
@@ -160,7 +161,7 @@ export const HistoryCard
           {!isMaster && order.order.status === Status.Payed && (
             <Chip color="primary" avatar={<Avatar className={classes.chip}><CardIcon /></Avatar>} label={order.order.status} />
           )}
-          {!isMaster && order.order.status === Status.WaitingPayment && (
+          {!isMaster && order.order.status === Status.WaitingPayment && isButtonVisible && (
             <Chip className={classes.rejectChip} onClick={handleReject} color="secondary" avatar={<Avatar><ClearIcon /></Avatar>} label='Отмена' />
           )}
           {!isMaster && order.order.status === Status.WaitingPayment && (
