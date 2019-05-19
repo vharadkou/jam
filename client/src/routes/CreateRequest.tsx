@@ -119,6 +119,7 @@ export const CreateRequest = observer(({ match: { params: { categoryId } } }: an
       },
       description: {
         disabled: false,
+        value: '',
       },
       preferredTime: preferredDate,
       address: {
