@@ -127,13 +127,13 @@ export const HistoryCard
           {!isMaster && order.order.status === Status.WaitingPayment && (
             <Chip color="default" onClick={handlePayment} avatar={<Avatar><AttachMoneyIcon /></Avatar>} label={order.order.status} />
           )}
-          {order.order.status === Status.InProgress && (
+          {!isMaster && order.order.status === Status.InProgress && (
             <Chip color="default" onClick={handlePayment} avatar={<Avatar><AllInclusiveIcon /></Avatar>} label={order.order.status} />
           )}
-          {order.order.status === Status.Accepted && (
+          {!isMaster && order.order.status === Status.Accepted && (
             <Chip color="default" onClick={handlePayment} avatar={<Avatar><HowToRegIcon /></Avatar>} label={order.order.status} />
           )}
-          {order.order.status === Status.InPool && (
+          {!isMaster && order.order.status === Status.InPool && (
             <Chip color="default" onClick={handlePayment} avatar={<Avatar><HourglassEmptyIcon /></Avatar>} label={order.order.status} />
           )}
           {isMaster && order.order.status === Status.Accepted && (
