@@ -3,16 +3,16 @@ import ReactDOM from 'react-dom';
 import Geosuggest from 'react-geosuggest';
 
 const defaultFixtures = [
-    { label: 'Могилев', location: { lat: 53.8834808, lng: 30.2114947 } },
-    { label: 'Old Elbe Tunnel, Hamburg', location: { lat: 53.5459, lng: 9.966576 } },
-    { label: 'Reeperbahn, Hamburg', location: { lat: 53.5495629, lng: 9.9625838 } },
-    { label: 'Alster, Hamburg', location: { lat: 53.5610398, lng: 10.0259135 } }
+    { label: 'улица Симонова 19, Могилёв, Беларусь', location: { lat: 53.8693128, lng: 30.31230729999993 } },
+    { label: 'улица Якубовского 13, Могилёв, Беларусь', location: { lat: 53.9171596, lng: 30.318234200000006 } },
+    { label: 'улица Космонавтов 19, Могилёв, Беларусь', location: { lat: 53.9108161, lng: 30.315367000000037 } },
 ];
 
 export const AddressInput = ({
     fixtures = defaultFixtures,
     onChange = (...data) => { console.log(data) },
-}) => (
+}) => {
+    return (
         <div>
             <Geosuggest
                 placeholder="Улица и номер дома"
@@ -22,4 +22,5 @@ export const AddressInput = ({
                 location={new (window as any).google.maps.LatLng(53.8834808, 30.2114947)}
                 radius="20" />
         </div>
-    );
+    )
+};

@@ -21,12 +21,14 @@ export class OrdersStore {
         name: order.requestName.value,
         date: order.preferredTime,
         address: order.address.description ? order.address.description : null,
+        apartmentNumber: order.apartmentNumber,
         services: [{
           count: 1,
           name: order.requestName.value,
           price: order.requestName.cost,
         }],
         status: 'Рассматривается',
+        creationTime: Date.now(),
       },
     };
 

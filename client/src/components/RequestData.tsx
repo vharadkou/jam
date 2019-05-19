@@ -21,6 +21,7 @@ export const RequestData = ({
     requestName,
     description,
     preferredTime,
+    apartmentNumber,
 }) => {
     const classes = useStyles();
 
@@ -41,6 +42,7 @@ export const RequestData = ({
                 <TextField
                     key='description'
                     label="Описание"
+                    variant="outlined"
                     rowsMax="5"
                     multiline
                     value={description.value}
@@ -48,7 +50,7 @@ export const RequestData = ({
                     onChange={(e) => handleChange('description')(e.target.value)}
                 />
             </div>
-            <div>
+            <div className={classes.field}>
                 <MaterialUIPickers
                     key='endDate'
                     dateLabel="Ожидаямая дата"
@@ -57,9 +59,18 @@ export const RequestData = ({
                     selectedDate={preferredTime}
                 ></MaterialUIPickers>
             </div>
-            <div>
+            <div className={classes.field}>
                 <AddressInput onChange={handleChange('address')}
                 ></AddressInput>
+            </div>
+            <div className={classes.field}>
+                <TextField
+                    key='apartmentNumber'
+                    label="Номер квартиры"
+                    variant="outlined"
+                    value={apartmentNumber}
+                    onChange={(e) => handleChange('apartmentNumber')(e.target.value)}
+                />
             </div>
         </div >
     );
