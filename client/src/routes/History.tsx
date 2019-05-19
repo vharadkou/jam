@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
 
-import { HistoryCard } from 'components/HistoryCard'
+import { HistoryCard, Order } from 'components/HistoryCard'
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { useStore } from 'stores';
 import { CSSProperties } from '@material-ui/styles/withStyles';
@@ -34,11 +34,20 @@ const useStyles = makeStyles(theme =>
 
 export const History = observer(() => {
   const classes = useStyles();
-  const { ordersStore, authStore } = useStore();
+  const { ordersStore, authStore, paymentStore } = useStore();
 
   useEffect(() => {
     if (authStore.user)
       ordersStore.load(authStore.user.phoneNumber)
+  }, [])
+
+  const makePayment = useCallback(async (order: Order) => {
+    const payments = order.services.map(service => ({
+      label: service.name,
+      value: service.price.toString(),
+    }))
+
+    await paymentStore.showPayment(payments);
   }, [])
 
   return (
@@ -49,7 +58,7 @@ export const History = observer(() => {
             ordersStore
               .Orders
               .map((order, i) => <div key={i} className={classes.card}>
-                <HistoryCard order={order.order} /> </div>)
+                <HistoryCard order={order.order} onPayment={makePayment} /> </div>)
             : null
         }
       </div>

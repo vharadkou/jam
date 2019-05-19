@@ -11,6 +11,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Chip from '@material-ui/core/Chip';
 import Avatar from '@material-ui/core/Avatar';
 import CardIcon from '@material-ui/icons/CreditCard';
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -34,20 +35,33 @@ const fortamDate = (date: Date) => {
   return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
 }
 
+enum Status {
+  WaitingPayment = 'Ожидание оплаты',
+  Payed = 'Оплачено'
+}
+
+export interface Order {
+  date: any,
+  name: string,
+  services:
+  { name: string, count: number, price: number }[],
+  status: string
+}
+
 export const HistoryCard
-  = ({ order }: {
-    order:
-    {
-      date: any, name: string, services:
-      { name: string, count: number, price: number }[],
-      payed: boolean
-    }
+  = ({ order, onPayment }: {
+    order: Order,
+    onPayment: (order: Order) => void
   }) => {
     const [expanded, setExpanded] = useState(
       false
     );
     const classes = useStyles();
     const total = order.services.reduce((acc, el, i) => el.count * el.price + acc, 0);
+
+    const handlePayment = () => {
+      onPayment(order);
+    }
 
     return (
       <Card className={classes.card}>
@@ -59,13 +73,14 @@ export const HistoryCard
             {fortamDate(order.date.toDate())}
           </Typography>
           <Typography component="p" className={classes.payment}>
-            Стоимость: {total} р
+            Стоимость: {total} BYN
           </Typography>
-          {order.payed ? (
-            <Chip color="primary" avatar={<Avatar><CardIcon /></Avatar>} label="Оплачено" />
-          ) : (
-              <Chip color="primary" avatar={<Avatar><CardIcon /></Avatar>} label="Оплачено" />
-            )}
+          {order.status === Status.Payed && (
+            <Chip color="primary" avatar={<Avatar><CardIcon /></Avatar>} label={order.status} />
+          )}
+          {order.status === Status.WaitingPayment && (
+            <Chip color="default" onClick={handlePayment} avatar={<Avatar><AttachMoneyIcon /></Avatar>} label={order.status} />
+          )}
         </CardContent>
 
         <ExpansionPanel expanded={expanded === true} onChange={event => setExpanded(!expanded)}>

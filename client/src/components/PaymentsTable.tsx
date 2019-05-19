@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme =>
 
 );
 
-const headers = ['Оказанная услуга', 'Кол., шт', 'Цена, р', 'Ст-ть, р'];
+const headers = ['Оказанная услуга', 'Кол., шт', 'Цена, BYN', 'Ст-ть, BYN'];
 
 export const PaymentsTable
   = ({ services, showTotal }:

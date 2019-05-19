@@ -43,15 +43,7 @@ const useStyles = makeStyles((theme) =>
 
 export const Home = observer(() => {
   const classes = useStyles();
-  const { paymentStore, routerStore, authStore: { userData } } = useStore();
-
-  const handleCheckout = async () => {
-    await paymentStore.showPayment();
-  }
-
-  const handleTestItem = () => {
-    paymentStore.appendItem({ label: 'Test Item', value: '18' });
-  }
+  const { routerStore, authStore: { userData } } = useStore();
 
   const openCatalog = useCallback(() => {
     routerStore.push('/user/categories');
@@ -91,8 +83,6 @@ export const Home = observer(() => {
               </React.Fragment>
             )}
         </div>
-        <button onClick={handleTestItem}>add test item</button>
-        <button onClick={handleCheckout}>checkout</button>
       </header>
     </div>
   );
