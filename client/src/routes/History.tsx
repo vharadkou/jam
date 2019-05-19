@@ -5,6 +5,7 @@ import { HistoryCard, Order } from 'components/HistoryCard'
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { useStore } from 'stores';
 import { CSSProperties } from '@material-ui/styles/withStyles';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -28,6 +29,9 @@ const useStyles = makeStyles(theme =>
     card: {
       width: 'calc(100% - 20px)',
       padding: '10px 0',
+    },
+    progress: {
+      margin: theme.spacing(2)
     },
   })
 );
@@ -65,6 +69,9 @@ export const History = observer(() => {
   return (
     <div className={classes.root}>
       <div className={classes.main}>
+        {!ordersStore.Orders && (
+          <CircularProgress className={classes.progress} />
+        )}
         {
           ordersStore.Orders ?
             ordersStore

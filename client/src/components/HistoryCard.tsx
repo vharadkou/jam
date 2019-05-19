@@ -123,7 +123,7 @@ export const HistoryCard
             Стоимость: {total} BYN
           </Typography>
           {!isMaster && order.order.status === Status.Payed && (
-            <Chip color="primary" className={classes.chip} avatar={<Avatar><CardIcon /></Avatar>} label={order.order.status} />
+            <Chip color="primary" avatar={<Avatar className={classes.chip}><CardIcon /></Avatar>} label={order.order.status} />
           )}
           {!isMaster && order.order.status === Status.WaitingPayment && (
             <Chip color="default" onClick={handlePayment} avatar={<Avatar><AttachMoneyIcon /></Avatar>} label={order.order.status} />
