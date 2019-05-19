@@ -12,8 +12,7 @@ const defaultFixtures = [
 export const AddressInput = ({
     fixtures = defaultFixtures,
     onChange = (...data) => { console.log(data) },
-}) => {
-    return (
+}) => (
         <div>
             <Geosuggest
                 placeholder="Улица и номер дома"
@@ -23,5 +22,4 @@ export const AddressInput = ({
                 location={new (window as any).google.maps.LatLng(53.8834808, 30.2114947)}
                 radius="20" />
         </div>
-    )
-};
+    );

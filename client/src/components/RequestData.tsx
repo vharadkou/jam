@@ -20,7 +20,6 @@ export const RequestData = ({
     handleChange,
     requestName,
     description,
-    houseNumber,
     preferredTime,
 }) => {
     const classes = useStyles();
@@ -46,7 +45,7 @@ export const RequestData = ({
                     multiline
                     value={description.value}
                     disabled={description.disabled}
-                    onChange={handleChange('description')}
+                    onChange={(e) => handleChange('description')(e.target.value)}
                 />
             </div>
             <div>
@@ -61,15 +60,6 @@ export const RequestData = ({
             <div>
                 <AddressInput onChange={handleChange('address')}
                 ></AddressInput>
-            </div>
-            <div className={classes.field}>
-                <TextField
-                    key='request'
-                    label={'Номер квартиры'}
-                    value={houseNumber.value}
-                    disabled={houseNumber.disabled}
-                    onChange={handleChange('houseNumber')}
-                />
             </div>
         </div >
     );

@@ -124,9 +124,6 @@ export const CreateRequest = observer(({ match: { params: { categoryId } } }: an
       address: {
         disabled: false,
       },
-      houseNumber: {
-        disabled: false,
-      }
     };
   }
 
