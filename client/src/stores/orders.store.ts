@@ -20,7 +20,11 @@ export class OrdersStore {
             order: {
                 name: order.requestName.value,
                 date: order.preferredTime,
-                services: [],
+                services: [{
+                    count: 1,
+                    name: order.requestName.value,
+                    price: order.requestName.cost,
+                }],
                 status: 'Рассматривается',
             },
         };

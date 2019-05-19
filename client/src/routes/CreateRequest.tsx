@@ -102,6 +102,7 @@ export const CreateRequest = observer(({ match: { params: { categoryId } } }: an
     return {
       requestName: {
         value: selectedRequestData ? selectedRequestData.data : selectedRequestData,
+        cost: selectedRequestData ? selectedRequestData.cost : 3,
         disabled: true,
       },
       description: {

@@ -38,7 +38,7 @@ const fortamDate = (date: Date) => {
 export enum Status {
   InPool = 'Рассматривается',
   Accepted = 'Принята',
-  InProgress = 'В процесс',
+  InProgress = 'В процессе',
   WaitingPayment = 'Ожидание оплаты',
   Payed = 'Оплачено'
 }
