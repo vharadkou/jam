@@ -35,10 +35,17 @@ const useStyles = makeStyles(theme =>
 export const History = observer(() => {
   const classes = useStyles();
   const { ordersStore, authStore, paymentStore } = useStore();
+  let interval;
 
   useEffect(() => {
     if (authStore.user)
-      ordersStore.load(authStore.user.phoneNumber)
+      interval = setInterval(() => {
+        ordersStore.load(authStore.user.phoneNumber)
+      }, 5000);
+
+    return () => {
+      clearInterval(interval)
+    }
   }, [])
 
   const makePayment = useCallback(async (order: Order) => {
