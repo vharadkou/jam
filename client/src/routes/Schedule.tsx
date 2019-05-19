@@ -32,35 +32,36 @@ const useStyles = makeStyles(theme =>
   })
 );
 
-export const Schedule = observer(() =>
-{
+export const Schedule = observer(() => {
   const classes = useStyles();
   const { ordersStore, authStore, paymentStore } = useStore();
+  let interval;
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     if (authStore.user)
-      ordersStore.loadAsMaster(authStore.user.phoneNumber)
+      interval = setInterval(() => {
+        ordersStore.loadAsMaster(authStore.user!.phoneNumber)
+      }, 5000);
+
+    return () => {
+      clearInterval(interval)
+    }
   }, [])
 
-  const updateOrderStatus = useCallback(async (order: Order, status) =>
-  {
+  const updateOrderStatus = useCallback(async (order: Order, status) => {
 
     await ordersStore.updateStatus(order.number, status);
 
-    if (authStore.user)
-    {
+    if (authStore.user) {
       ordersStore.loadAsMaster(authStore.user.phoneNumber);
     }
   }, [])
 
 
-  const addServices = useCallback(async (order: Order, services) =>
-  {
+  const addServices = useCallback(async (order: Order, services) => {
 
     await ordersStore.addServices(order.number, services);
-    if (authStore.user)
-    {
+    if (authStore.user) {
       ordersStore.loadAsMaster(authStore.user.phoneNumber);
     }
   }, [])
