@@ -83,9 +83,10 @@ export const CreateRequest = observer(({ match: { params: { categoryId } } }: an
   const classes = useStyles();
 
   const { ordersStore, categoriesStore, authStore } = useStore();
-  const { categories, isLoading } = categoriesStore;
 
   const createDefalteData = () => {
+    const { categories } = categoriesStore;
+
     let selectedRequestData: Value | undefined = undefined;
 
     if (categories) {
@@ -111,11 +112,9 @@ export const CreateRequest = observer(({ match: { params: { categoryId } } }: an
   }
 
   useEffect(() => {
-    if (!isLoading && categories === null) {
-      categoriesStore.load('categories')
-        .then(() => setRequestData(createDefalteData()));
-    }
-  }, [categoriesStore, isLoading, categories])
+    categoriesStore.load('categories')
+      .then(() => setRequestData(createDefalteData()));
+  }, [])
 
   const [warnings, setWarnings] = useState(ALL_WARNINGS_MESSAGES);
   const [requestData, setRequestData] = useState(createDefalteData());

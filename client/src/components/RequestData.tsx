@@ -2,6 +2,7 @@ import React from 'react';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { MaterialUIPickers } from './MaterialUIPickers';
+import { request } from 'https';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -28,7 +29,7 @@ export const RequestData = ({
             <div className={classes.field}>
                 <TextField
                     key='request'
-                    label="Услуга"
+                    label={requestName.value && requestName.disabled ? '' : 'Услуга'}
                     rowsMax="2"
                     multiline
                     value={requestName.value}
