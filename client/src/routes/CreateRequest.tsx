@@ -186,10 +186,10 @@ export const CreateRequest = observer(({ match: { params: { categoryId } } }: an
                 <div className={classes.container}>
                   <Typography variant="h6" style={{ textAlign: 'center', fontWeight: 1000, marginLeft: 38 }}>Внимание</Typography>
                   <IconButton className={classes.button} aria-label="Delete" onClick={() => setDrawerOpen(false)}>
-                    <CloseIcon style={{color: 'black'}}/>
+                    <CloseIcon style={{ color: 'black' }} />
                   </IconButton>
                 </div>
-                <ul style={{marginTop: 0}}>{warning.messages.map((m, j) => (<li key={j}><Typography variant="body2">{m}</Typography></li>))}</ul>
+                <ul style={{ marginTop: 0 }}>{warning.messages.map((m, j) => (<li key={j}><Typography variant="body2">{m}</Typography></li>))}</ul>
               </span>
             </div>
           ))}

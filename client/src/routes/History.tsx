@@ -40,7 +40,7 @@ export const History = observer(() => {
   useEffect(() => {
     if (authStore.user)
       interval = setInterval(() => {
-        ordersStore.load(authStore.user.phoneNumber)
+        ordersStore.load(authStore.user!.phoneNumber)
       }, 5000);
 
     return () => {
