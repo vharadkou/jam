@@ -54,7 +54,7 @@ export const TopBar = observer((props: any) => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="absolute">
+      <AppBar position="fixed">
         <Toolbar className={classes.toolbar}>
           {isHome ? (
             <div className={classes.logo}>
